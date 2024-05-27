@@ -41,7 +41,7 @@ public class Student extends User{
     @OneToMany(mappedBy = "recipientStudent", cascade = CascadeType.ALL)
     private List<Messaging> receivedMessages;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "requesterStudent", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

@@ -8,14 +8,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "Pago_Tarjeta")
+@PrimaryKeyJoinColumn(name = "ID_PagoTarjeta")
 @Getter
 @Setter
 public class CardPayment extends Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PagoTarjeta")
-    private Long id;
-
     @Column(name = "Numero_Tarjeta")
     private String cardNumber;
 

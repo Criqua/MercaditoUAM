@@ -59,7 +59,7 @@ public class Publication {
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Messaging> messagingList;
 
-    @OneToMany(mappedBy = "publicacion", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Comment> commentSet;

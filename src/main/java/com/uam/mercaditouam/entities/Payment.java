@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "Pago")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 public class Payment {
