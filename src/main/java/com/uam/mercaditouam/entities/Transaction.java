@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @PrimaryKeyJoinColumn(name = "ID_PagoTarjeta")
 @Getter
 @Setter
-public class CardPayment extends Payment {
+public class Transaction extends Payment {
     @Column(name = "Numero_Tarjeta")
     private String cardNumber;
 
