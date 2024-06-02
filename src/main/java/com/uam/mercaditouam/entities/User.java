@@ -13,10 +13,10 @@ public abstract class User {
     @Column(name = "CIF")
     private Long CIF;
 
-    @Column(name = "Nombres")
+    @Column(name = "Nombre")
     private String name;
 
-    @Column(name = "Apellidos")
+    @Column(name = "Apellido")
     private String surname;
 
     @Column(name = "Correo")

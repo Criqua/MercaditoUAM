@@ -7,8 +7,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Pago_Tarjeta")
-@PrimaryKeyJoinColumn(name = "ID_PagoTarjeta")
+@Table(name = "Pago_Transaccion")
+@PrimaryKeyJoinColumn(name = "ID_PagoTransaccion")
 @Getter
 @Setter
 public class Transaction extends Payment {
