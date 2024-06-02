@@ -1,9 +1,7 @@
 package com.uam.mercaditouam.controller;
 
-import com.uam.mercaditouam.entities.Administrator;
 import com.uam.mercaditouam.entities.Student;
-import com.uam.mercaditouam.entities.User;
-import com.uam.mercaditouam.service.IServiceUser;
+import com.uam.mercaditouam.service.IServiceStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +12,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class ControllerStudent {
     @Autowired
-    private IServiceUser serviceUser;
+    private IServiceStudent serviceUser;
 
     @GetMapping("/all")
     public List<Student> getAll() {
