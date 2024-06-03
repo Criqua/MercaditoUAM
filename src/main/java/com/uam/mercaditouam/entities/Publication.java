@@ -52,10 +52,6 @@ public class Publication {
         UNIQUE_ARTICLE, AVAILABLE, NOT_AVAILABLE
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Adm_Dimisor", referencedColumnName = "CIF", nullable = true)
-    private Administrator administrator;
-
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Messaging> messagingList;
 

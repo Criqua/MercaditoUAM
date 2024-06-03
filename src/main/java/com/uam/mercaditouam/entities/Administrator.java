@@ -14,8 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Administrator extends User{
-    @OneToMany(mappedBy = "administrator", fetch = FetchType.LAZY)
-    private List<Publication> publicationList;
 
     @OneToMany(mappedBy = "administrator", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;

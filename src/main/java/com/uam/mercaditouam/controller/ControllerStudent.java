@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/student")
 public class ControllerStudent {
     @Autowired
-    private IServiceStudent serviceUser;
+    private IServiceStudent serviceStudent;
 
     @GetMapping("/all")
     public List<Student> getAll() {
-        return serviceUser.getAll();
+        return serviceStudent.getAll();
     }
 
     @PostMapping("/create")
@@ -33,7 +33,7 @@ public class ControllerStudent {
         if(student.getPhoneNumber().length() > 12) {
             return ResponseEntity.badRequest().body("El numero no es valido.");
         }
-        serviceUser.createStudent(student);
+        serviceStudent.createStudent(student);
         return ResponseEntity.ok("User created.");
     }
 }

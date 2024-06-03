@@ -1,7 +1,7 @@
 package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.entities.Student;
-import com.uam.mercaditouam.repository.IRepoUser;
+import com.uam.mercaditouam.repository.IRepoStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,8 +9,8 @@ import java.util.List;
 
 @Service
 public class ServiceStudent implements IServiceStudent {
-    @Autowired
-    private IRepoUser repo;
+    @Autowired(required = true)
+    private IRepoStudent repo;
     @Override
     public List<Student> getAll() {
         return repo.findAll();
