@@ -1,6 +1,7 @@
 package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Compra")
-@Getter
-@Setter
+@Data
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

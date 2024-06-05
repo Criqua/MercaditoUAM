@@ -2,6 +2,7 @@ package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
@@ -12,8 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name="Estudiante")
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+@Data
 public class Student extends User{
     @Column(name = "Telefono")
     private String phoneNumber;

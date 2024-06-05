@@ -9,9 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Comentario")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,12 +2,12 @@ package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @MappedSuperclass
-@Getter
-@Setter
+@Data
 public abstract class User {
     @Id
     @Column(name = "CIF")

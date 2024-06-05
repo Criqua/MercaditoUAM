@@ -1,8 +1,10 @@
 package com.uam.mercaditouam.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Ticket")
-@Getter
-@Setter
+@Data
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CIF_Solicitante", referencedColumnName = "CIF")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonBackReference
     private Student requesterStudent;
 
     @Column(name = "Descripcion_Problema")

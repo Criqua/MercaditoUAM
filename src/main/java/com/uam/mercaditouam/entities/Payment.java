@@ -2,14 +2,14 @@ package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "Pago")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter
-@Setter
+@Data
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
