@@ -36,6 +36,8 @@ public class ServiceStudent implements IServiceStudent {
             student.setSurname(studentDTO.getSurname());
             student.setEmail(studentDTO.getEmail());
             student.setProfilePhoto(studentDTO.getProfilePhoto());
+            student.setPhoneNumber(studentDTO.getPhoneNumber());
+            student.setPersonalDescription(studentDTO.getPersonalDescription());
         }
         List<PublicationDTO> publications = studentDTO.getPublicationList();
         List<MessagingDTO> sentMessages = studentDTO.getSentMessages();
