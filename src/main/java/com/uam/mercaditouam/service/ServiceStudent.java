@@ -1,8 +1,6 @@
 package com.uam.mercaditouam.service;
 
-import com.uam.mercaditouam.dto.ImageDTO;
-import com.uam.mercaditouam.dto.PublicationDTO;
-import com.uam.mercaditouam.dto.StudentDTO;
+import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.Image;
 import com.uam.mercaditouam.entities.Publication;
 import com.uam.mercaditouam.entities.Student;
@@ -16,10 +14,13 @@ import java.util.List;
 
 @Service
 public class ServiceStudent implements IServiceStudent {
+
     @Autowired(required = true)
     private IRepoStudent repoStudent;
+
     @Autowired
     private IRepoPublication repoPublication;
+
     @Override
     public List<Student> getAll() {
         return repoStudent.findAll();
@@ -36,19 +37,14 @@ public class ServiceStudent implements IServiceStudent {
             student.setEmail(studentDTO.getEmail());
             student.setProfilePhoto(studentDTO.getProfilePhoto());
         }
-        List<Publication> publications = new ArrayList<>();
-        List<Image> images = new ArrayList<>();
-        for(PublicationDTO p : studentDTO.getPublicationList()) {
-            Publication publication = repoPublication.findById(p.getId()).orElse(null);
-            if(publication == null) {
-                publication = new Publication();
-                publication.setId(p.getId());
-            }
-            publication.setStudent(student);
-            publications.add(publication);
-        }
+        List<PublicationDTO> publications = studentDTO.getPublicationList();
+        List<MessagingDTO> sentMessages = studentDTO.getSentMessages();
+        List<MessagingDTO> receivedMessages = studentDTO.getReceivedMessages();
+        List<TicketDTO> ticketList = studentDTO.getTicketList();
+        List<CommentDTO> commentList = studentDTO.getCommentList();
+        List<PurchaseDTO> purchaseList = studentDTO.getPurchaseList();
+        repoStudent.save(student);
     }
-
 
     @Override
     public void deleteStudent(Long CIF) {

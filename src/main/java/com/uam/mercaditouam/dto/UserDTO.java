@@ -8,5 +8,5 @@ public abstract class UserDTO {
     private String name;
     private String surname;
     private String email;
-    private String profilePhoto;
+    private byte[] profilePhoto;
 }

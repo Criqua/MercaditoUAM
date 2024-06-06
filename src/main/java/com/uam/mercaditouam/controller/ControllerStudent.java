@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.controller;
 
+import com.uam.mercaditouam.dto.StudentDTO;
 import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.service.IServiceStudent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ControllerStudent {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody Student student) {
+    public ResponseEntity<String> create(@RequestBody StudentDTO student) {
         if(Long.toString(student.getCIF()).length() != 8) {
             return ResponseEntity.badRequest().body("El CIF no es valido.");
         }

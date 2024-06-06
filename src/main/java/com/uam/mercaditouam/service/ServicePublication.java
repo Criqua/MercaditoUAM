@@ -12,6 +12,7 @@ import java.util.List;
 public class ServicePublication implements IServicePublication{
     @Autowired
     private IRepoPublication repoPublication;
+
     @Override
     public List<Publication> getAll() {
         return repoPublication.findAll();

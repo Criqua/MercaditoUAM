@@ -11,6 +11,7 @@ import java.util.List;
 public class ServiceAdministrator implements IServiceAdministrator{
     @Autowired
     private IRepoAdministrator repoAdmin;
+
     @Override
     public List<Administrator> getAll() {
         return repoAdmin.findAll();
