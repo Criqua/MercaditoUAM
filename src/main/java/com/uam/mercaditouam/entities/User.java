@@ -16,11 +16,11 @@ public abstract class User {
     private Long CIF;
 
     @Column(name = "Nombre")
-    @Pattern(regexp = "^[A-Za-z]+$" )
+    @Pattern(regexp = "^[A-Za-z]+$")
     private String name;
 
     @Column(name = "Apellido")
-    @Pattern(regexp = "^[A-Za-z]+$" )
+    @Pattern(regexp = "^[A-Za-z]+$")
     private String surname;
 
     @Column(name = "Correo")

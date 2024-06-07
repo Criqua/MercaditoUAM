@@ -47,10 +47,6 @@ public class Publication {
     @Column(name = "Esta_Visible")
     private boolean isVisible;
 
-    private enum AvailabilityType {
-        UNIQUE_ARTICLE, AVAILABLE, NOT_AVAILABLE
-    }
-
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Messaging> messagingList;
 

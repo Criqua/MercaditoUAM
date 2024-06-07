@@ -9,7 +9,10 @@ import java.util.List;
 
 @Service
 public interface IServiceStudent {
+
     public List<Student> getAll();
-    void createStudent(StudentDTO studentDTO);
+
+    void saveStudent(StudentDTO studentDTO);
+
     void deleteStudent(Long CIF);
 }
