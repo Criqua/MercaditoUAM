@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.controller;
 
+import com.uam.mercaditouam.dto.AdministratorDTO;
 import com.uam.mercaditouam.entities.Administrator;
 import com.uam.mercaditouam.service.IServiceAdministrator;
 import jakarta.validation.Valid;
@@ -21,8 +22,8 @@ public class ControllerAdministrator {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody Administrator administrator) {
-        serviceAdministrator.createAdministrator(administrator);
+    public ResponseEntity<String> create(@RequestBody AdministratorDTO administratorDTO) {
+        serviceAdministrator.createAdministrator(administratorDTO);
         return ResponseEntity.ok("Administrator created.");
     }
 }

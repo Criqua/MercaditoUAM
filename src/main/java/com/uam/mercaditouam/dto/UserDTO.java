@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.dto;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data

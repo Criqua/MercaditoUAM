@@ -18,8 +18,6 @@ public class ServiceStudent implements IServiceStudent {
     @Autowired(required = true)
     private IRepoStudent repoStudent;
 
-    @Autowired
-    private IRepoPublication repoPublication;
 
     @Override
     public List<Student> getAll() {
@@ -40,6 +38,7 @@ public class ServiceStudent implements IServiceStudent {
             student.setPersonalDescription(studentDTO.getPersonalDescription());
         }
         List<PublicationDTO> publications = studentDTO.getPublicationList();
+        student.setPublicationList(publications);
         List<MessagingDTO> sentMessages = studentDTO.getSentMessages();
         List<MessagingDTO> receivedMessages = studentDTO.getReceivedMessages();
         List<TicketDTO> ticketList = studentDTO.getTicketList();
