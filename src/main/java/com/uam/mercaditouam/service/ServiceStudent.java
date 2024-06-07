@@ -1,23 +1,27 @@
 package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.*;
-import com.uam.mercaditouam.entities.Image;
-import com.uam.mercaditouam.entities.Publication;
-import com.uam.mercaditouam.entities.Student;
+import com.uam.mercaditouam.entities.*;
 import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceStudent implements IServiceStudent {
 
-    @Autowired(required = true)
+    @Autowired
     private IRepoStudent repoStudent;
 
+    @Autowired
+    private IRepoPublication repoPublication;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<Student> getAll() {
@@ -26,24 +30,20 @@ public class ServiceStudent implements IServiceStudent {
 
     @Override
     public void createStudent(StudentDTO studentDTO) {
-        Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
-        if(student == null) {
-            student = new Student();
-            student.setCIF(studentDTO.getCIF());
-            student.setName(studentDTO.getName());
-            student.setSurname(studentDTO.getSurname());
-            student.setEmail(studentDTO.getEmail());
-            student.setProfilePhoto(studentDTO.getProfilePhoto());
-            student.setPhoneNumber(studentDTO.getPhoneNumber());
-            student.setPersonalDescription(studentDTO.getPersonalDescription());
-        }
-        List<PublicationDTO> publications = studentDTO.getPublicationList();
+        Student student = repoStudent.findById(studentDTO.getCIF()).orElse(new Student());
+
+        // Mapear las propiedades del DTO a la entidad Student
+        modelMapper.map(studentDTO, student);
+
+        // Mapear las publicaciones del DTO a las entidades Publication
+        List<Publication> publications = studentDTO.getPublicationList().stream()
+                .map(pubDTO -> modelMapper.map(pubDTO, Publication.class))
+                .collect(Collectors.toList());
         student.setPublicationList(publications);
-        List<MessagingDTO> sentMessages = studentDTO.getSentMessages();
-        List<MessagingDTO> receivedMessages = studentDTO.getReceivedMessages();
-        List<TicketDTO> ticketList = studentDTO.getTicketList();
-        List<CommentDTO> commentList = studentDTO.getCommentList();
-        List<PurchaseDTO> purchaseList = studentDTO.getPurchaseList();
+
+        // No se requiere mapear mensajes, tickets, comentarios y compras ya que se han mapeado con ModelMapper
+
+        // Guardar el estudiante en la base de datos
         repoStudent.save(student);
     }
 
