@@ -34,7 +34,7 @@ public class ControllerStudent {
         if(student.getPhoneNumber().length() > 12) {
             return ResponseEntity.badRequest().body("El numero no es valido.");
         }
-        serviceStudent.createStudent(student);
+        serviceStudent.saveStudent(student);
         return ResponseEntity.ok("User created.");
     }
 }
