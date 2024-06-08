@@ -34,7 +34,22 @@ public class ControllerStudent {
         if(student.getPhoneNumber().length() > 12) {
             return ResponseEntity.badRequest().body("El numero no es valido.");
         }
-        serviceStudent.saveStudent(student);
-        return ResponseEntity.ok("User created.");
+        return serviceStudent.saveStudent(student);
+    }
+
+    @DeleteMapping("/delete/{CIF}")
+    public ResponseEntity<String> delete(@PathVariable("CIF") Long cif) {
+        if(cif == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
+        return serviceStudent.deleteStudent(cif);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody StudentDTO studentDTO) {
+        if(studentDTO.getCIF() == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
+        return  serviceStudent.updateStudent(studentDTO);
     }
 }

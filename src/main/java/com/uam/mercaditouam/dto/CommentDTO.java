@@ -16,4 +16,6 @@ public class CommentDTO {
     private String textBody;
     private LocalDateTime publishedDate;
     private Set<CommentDTO> answers;
+    //private Student student;
+    //private Publication publication;
 }

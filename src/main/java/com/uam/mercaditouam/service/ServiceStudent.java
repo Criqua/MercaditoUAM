@@ -1,19 +1,20 @@
 package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.*;
-import com.uam.mercaditouam.entities.Image;
-import com.uam.mercaditouam.entities.Publication;
-import com.uam.mercaditouam.entities.Student;
+import com.uam.mercaditouam.entities.*;
 import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ServiceStudent implements IServiceStudent {
+public class ServiceStudent implements IServiceStudent  {
 
     @Autowired(required = true)
     private IRepoStudent repoStudent;
@@ -27,16 +28,11 @@ public class ServiceStudent implements IServiceStudent {
     }
 
     @Override
-    public void saveStudent(StudentDTO studentDTO) {
+    public ResponseEntity<String> saveStudent(StudentDTO studentDTO) {
         Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
-
-        /**
-         * Si la condición se cumple, significa que se debe crear (registrar) un nuevo
-         * estudiante; por tanto, las listas provenientes por relaciones @OneToMany se
-         * inicializan a null y conjuntos @ManyToMany se inicializan a vacías. De no ser así,
-         * se actualiza el estudiante según sus datos existentes y atributos comunes.
-         */
-        if (student == null) {
+        if(student.getCIF() != null & repoStudent.existsById(student.getCIF())) {
+            return ResponseEntity.badRequest().body("User already exists");
+        }
             student = new Student();
             student.setCIF(studentDTO.getCIF());
             student.setName(studentDTO.getName());
@@ -52,42 +48,84 @@ public class ServiceStudent implements IServiceStudent {
             student.setReceivedMessages(null);
             student.setTicketList(null);
             student.setCommentList(null);
-        } else {
-            student.setPhoneNumber(studentDTO.getPhoneNumber());
-            student.setPersonalDescription(studentDTO.getPersonalDescription());
-            student.setProfilePhoto(studentDTO.getProfilePhoto());
 
-            // Actualizar seguidores y seguidos si están presentes en el DTO
-            student.setFollowing(Optional.ofNullable(studentDTO.getFollowing())
-                .map(set -> set.stream()
-                    .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
-                    .collect(Collectors.toSet()))
-                .orElse(new HashSet<>()));
-
-            student.setFollowers(Optional.ofNullable(studentDTO.getFollowers())
-                    .map(set -> set.stream()
-                            .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
-                            .collect(Collectors.toSet()))
-                    .orElse(new HashSet<>()));
-
-            student.setPublicationList(
-                Optional.ofNullable(studentDTO.getPublicationList())
-                    .map(publicationDTOS -> publicationDTOS.stream()
-                            .map(this::convertToPublicationEntity)
-                            .collect(Collectors.toList())
-                    )
-                    .orElse(Collections.emptyList())
-            );
-            // Seguir mismo procedimiento para cada relacion OneToMany
-        }
-
-        repoStudent.save(student);
+        return ResponseEntity.ok("User created.");
     }
 
     @Override
-    public void deleteStudent(Long CIF) {
-        repoStudent.deleteById(CIF);
+    public ResponseEntity<String> updateStudent(StudentDTO studentDTO) {
+        Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
+        student.setName(studentDTO.getName());
+        student.setSurname(studentDTO.getSurname());
+        student.setEmail(studentDTO.getEmail());
+        student.setPhoneNumber(studentDTO.getPhoneNumber());
+        student.setPersonalDescription(studentDTO.getPersonalDescription());
+        student.setProfilePhoto(studentDTO.getProfilePhoto());
+
+        // Actualizar seguidores y seguidos si están presentes en el DTO
+        student.setFollowing(Optional.ofNullable(studentDTO.getFollowing())
+                .map(set -> set.stream()
+                        .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
+                        .collect(Collectors.toSet()))
+                .orElse(new HashSet<>()));
+
+        student.setFollowers(Optional.ofNullable(studentDTO.getFollowers())
+                .map(set -> set.stream()
+                        .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
+                        .collect(Collectors.toSet()))
+                .orElse(new HashSet<>()));
+
+        student.setPublicationList(
+                Optional.ofNullable(studentDTO.getPublicationList())
+                        .map(publicationDTOS -> publicationDTOS.stream()
+                                .map(this::convertToPublicationEntity)
+                                .collect(Collectors.toList())
+                        )
+                        .orElse(Collections.emptyList())
+        );
+        // Seguir mismo procedimiento para cada relacion OneToMany
+        student.setSentMessages(Optional.ofNullable(studentDTO.getSentMessages())
+                .map(messagingDTOS -> messagingDTOS.stream()
+                        .map(this::convertToMessagingEntity).collect(Collectors.toList()))
+                .orElse(Collections.emptyList())
+        );
+
+        student.setReceivedMessages(Optional.ofNullable(studentDTO.getReceivedMessages())
+                .map(messagingDTOS -> messagingDTOS.stream()
+                        .map(this::convertToMessagingEntity).collect(Collectors.toList()))
+                .orElse(Collections.emptyList())
+        );
+
+        student.setTicketList(
+                Optional.ofNullable(studentDTO.getTicketList())
+                        .map(publicationDTOS -> publicationDTOS.stream()
+                                .map(this::convertToTicketEntity)
+                                .collect(Collectors.toList())
+                        )
+                        .orElse(Collections.emptyList())
+        );
+        student.setCommentList(
+                Optional.ofNullable(studentDTO.getCommentList())
+                        .map(publicationDTOS -> publicationDTOS.stream()
+                                .map(this::convertToCommentEntity)
+                                .collect(Collectors.toList())
+                        )
+                        .orElse(Collections.emptyList())
+        );
+        repoStudent.save(student);
+        return ResponseEntity.ok("User updated");
     }
+
+    @Override
+    public ResponseEntity<String> deleteStudent(Long CIF) {
+        Student student = repoStudent.findById(CIF).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
+        repoStudent.deleteById(CIF);
+        return ResponseEntity.ok("User deleted.");
+    }
+
 
     /**
      * Agregar al servicio publicacion, cada entidad deberá tener un método similar,
@@ -106,4 +144,32 @@ public class ServiceStudent implements IServiceStudent {
 
         return publication;
     }
+
+    private Messaging convertToMessagingEntity(MessagingDTO messagingDTO) {
+        Messaging messaging = new Messaging();
+        messaging.setId(messagingDTO.getId());
+        messaging.setContent(messagingDTO.getContent());
+        messaging.setSubmittedDate(messagingDTO.getSubmittedDate());
+        return messaging;
+    }
+    private Ticket convertToTicketEntity(TicketDTO ticketDTO) {
+        Ticket ticket = new Ticket();
+        ticket.setId(ticketDTO.getId());
+        ticket.setProblemDescription(ticketDTO.getProblemDescription());
+        ticket.setCreationDate(ticketDTO.getCreationDate());
+        ticket.setTicketStatus(ticketDTO.isTicketStatus());
+        return ticket;
+    }
+
+    private Comment convertToCommentEntity(CommentDTO commentDTO) {
+        Comment comment = new Comment();
+        comment.setId(commentDTO.getId());
+        comment.setScoredRating(commentDTO.getScoredRating());
+        comment.setTextBody(commentDTO.getTextBody());
+        comment.setPublishedDate(commentDTO.getPublishedDate());
+        //comment.setAnswers(commentDTO.getAnswers());
+        BeanUtils.copyProperties(commentDTO.getAnswers(), comment.getAnswers());
+        return comment;
+    }
+
 }
