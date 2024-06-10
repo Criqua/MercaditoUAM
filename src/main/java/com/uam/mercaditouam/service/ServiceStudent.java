@@ -30,9 +30,7 @@ public class ServiceStudent implements IServiceStudent  {
     @Override
     public ResponseEntity<String> saveStudent(StudentDTO studentDTO) {
         Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
-        if(student.getCIF() != null & repoStudent.existsById(student.getCIF())) {
-            return ResponseEntity.badRequest().body("User already exists");
-        }
+        if(student == null) {
             student = new Student();
             student.setCIF(studentDTO.getCIF());
             student.setName(studentDTO.getName());
@@ -48,6 +46,11 @@ public class ServiceStudent implements IServiceStudent  {
             student.setReceivedMessages(null);
             student.setTicketList(null);
             student.setCommentList(null);
+            repoStudent.save(student);
+        } else
+            if(repoStudent.existsById(student.getCIF())) {
+                return ResponseEntity.badRequest().body("User already exists");
+        }
 
         return ResponseEntity.ok("User created.");
     }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/student")
@@ -33,6 +34,10 @@ public class ControllerStudent {
         }
         if(student.getPhoneNumber().length() > 12) {
             return ResponseEntity.badRequest().body("El numero no es valido.");
+        }
+        if(Objects.equals(student.getEmail(), "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")) {
+            return ResponseEntity.badRequest().body("El correo no es valido.");
         }
         return serviceStudent.saveStudent(student);
     }
