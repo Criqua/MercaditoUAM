@@ -33,6 +33,13 @@ public class ControllerPublication {
 
         return servicePublication.createPublication(publicationDTO);
     }
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody PublicationDTO publicationDTO) {
+        if(publicationDTO.getId() == null) {
+            return ResponseEntity.badRequest().body("The publication does not exist.");
+        }
+        return servicePublication.updatePublication(publicationDTO);
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {

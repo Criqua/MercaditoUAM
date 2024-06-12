@@ -57,7 +57,7 @@ public class ServicePublication implements IServicePublication{
             publication.setAvailability(publicationDTO.getAvailability());
             publication.setObservations(publicationDTO.getObservations());
             publication.setVisible(publicationDTO.isVisible());
-            publication.setCommentSet(null);
+            publication.setCommentList(null);
             publication.setPurchaseList(null);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
@@ -69,14 +69,17 @@ public class ServicePublication implements IServicePublication{
     @Override
     public ResponseEntity<String> updatePublication(PublicationDTO publicationDTO) {
         Publication publication = repoPublication.findById(publicationDTO.getId()).orElse(null);
+        if(publication == null) {
+            return ResponseEntity.badRequest().body("User does not exist.");
+        }
         publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
                 .map(imageDTOS -> imageDTOS.stream()
                         .map(this::convertToImageEntity)
                         .collect(Collectors.toList()))
                 .orElse(Collections.emptyList()));
-        if (publication.getImageList().isEmpty()) {
+        /*if (publication.getImageList().isEmpty()) {
             return ResponseEntity.badRequest().body("Publications should at least have one image.");
-        }
+        }*/
         publication.setTitle(publicationDTO.getTitle());
         publication.setDescription(publicationDTO.getDescription());
         publication.setPrice(publicationDTO.getPrice());
@@ -84,11 +87,14 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-        publication.setCommentSet(Optional.ofNullable(publicationDTO.getCommentSet())
-                        .map(commentDTOS -> commentDTOS.stream()
+        publication.setCommentList(
+                Optional.ofNullable(publicationDTO.getCommentList())
+                        .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
-                                .collect(Collectors.toSet()))
-                        .orElse(Collections.emptySet()));
+                                .collect(Collectors.toList())
+                        )
+                        .orElse(Collections.emptyList())
+        );
         repoPublication.save(publication);
         return ResponseEntity.ok("Publication updated.");
     }

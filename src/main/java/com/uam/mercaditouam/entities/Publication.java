@@ -53,7 +53,7 @@ public class Publication {
     @OneToMany(mappedBy = "publication", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<Comment> commentSet;
+    private List<Comment> commentList;
 
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Purchase> purchaseList;

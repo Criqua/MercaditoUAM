@@ -28,7 +28,7 @@ public class PublicationDTO {
 
     private List<MessagingDTO> messagingListDTO;
 
-    private Set<CommentDTO> commentSet;
+    private List<CommentDTO> commentList;
 
     private List<PurchaseDTO> purchaseList;
 }
