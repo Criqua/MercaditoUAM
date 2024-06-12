@@ -2,11 +2,11 @@ package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.*;
-import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +19,19 @@ public class ServiceStudent implements IServiceStudent  {
     @Autowired(required = true)
     private IRepoStudent repoStudent;
 
-    @Autowired
-    private IRepoPublication repoPublication;
 
     @Override
     public List<Student> getAll() {
         return repoStudent.findAll();
+    }
+
+    @Override
+    public <T> T findById(Long cif) {
+        Student student = repoStudent.findById(cif).orElse(null);
+        if(student == null) {
+            return (T) ResponseEntity.badRequest().body("El estudiante no existe.");
+        }
+        return (T) student;
     }
 
     @Override
