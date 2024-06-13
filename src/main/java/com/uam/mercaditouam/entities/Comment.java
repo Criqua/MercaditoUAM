@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -37,9 +38,6 @@ public class Comment {
     @JoinColumn(name = "ID_comentario_Padre", nullable = true)
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<Comment> answers;
+    @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
+    private List<Comment> answers;
 }

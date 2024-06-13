@@ -6,6 +6,7 @@ import com.uam.mercaditouam.entities.Student;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 
@@ -15,7 +16,7 @@ public class CommentDTO {
     private Integer scoredRating;
     private String textBody;
     private LocalDateTime publishedDate;
-    private Set<CommentDTO> answers;
+    private List<CommentDTO> answers;
     //private Student student;
     //private Publication publication;
 }
