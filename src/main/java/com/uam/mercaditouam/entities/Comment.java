@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Comentario")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 public class Comment {
     @Id
@@ -25,6 +26,7 @@ public class Comment {
     @JoinColumn(name = "ID_Publicacion", referencedColumnName = "ID_Publicacion")
     private Publication publication;
 
+    @Transient
     @Column(name = "Calificacion_Otorgada")
     private Integer scoredRating;
 
@@ -34,10 +36,6 @@ public class Comment {
     @Column(name = "Fecha_Publicacion")
     private LocalDateTime publishedDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_comentario_Padre", nullable = true)
-    private Comment parentComment;
-
-    @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY)
-    private List<Comment> answers;
+    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentResponses> answers;
 }
