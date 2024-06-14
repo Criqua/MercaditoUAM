@@ -3,8 +3,6 @@ package com.uam.mercaditouam.entities;
 import jakarta.persistence.*;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
@@ -45,7 +43,7 @@ public class Student extends User{
     private List<Ticket> ticketList;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<Comment> commentList;
+    private List<MainComment> mainCommentList;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Purchase> purchaseList;

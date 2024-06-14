@@ -1,18 +1,13 @@
 package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
-
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
-@Entity
-@Table(name = "Comentario")
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 @Data
-public class Comment {
+public abstract class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Comentario")
@@ -26,16 +21,9 @@ public class Comment {
     @JoinColumn(name = "ID_Publicacion", referencedColumnName = "ID_Publicacion")
     private Publication publication;
 
-    @Transient
-    @Column(name = "Calificacion_Otorgada")
-    private Integer scoredRating;
-
     @Column(name = "Cuerpo_Texto")
     private String textBody;
 
     @Column(name = "Fecha_Publicacion")
     private LocalDateTime publishedDate;
-
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentResponses> answers;
 }

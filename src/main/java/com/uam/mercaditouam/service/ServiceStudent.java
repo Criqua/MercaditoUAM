@@ -3,10 +3,8 @@ package com.uam.mercaditouam.service;
 import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.*;
 import com.uam.mercaditouam.repository.IRepoStudent;
-import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +50,7 @@ public class ServiceStudent implements IServiceStudent  {
             student.setSentMessages(null);
             student.setReceivedMessages(null);
             student.setTicketList(null);
-            student.setCommentList(null);
+            student.setMainCommentList(null);
             repoStudent.save(student);
         } else
             if(repoStudent.existsById(student.getCIF())) {
@@ -114,7 +112,7 @@ public class ServiceStudent implements IServiceStudent  {
                         )
                         .orElse(Collections.emptyList())
         );
-        student.setCommentList(
+        student.setMainCommentList(
                 Optional.ofNullable(studentDTO.getCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
@@ -171,15 +169,15 @@ public class ServiceStudent implements IServiceStudent  {
         return ticket;
     }
 
-    private Comment convertToCommentEntity(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setId(commentDTO.getId());
-        comment.setScoredRating(commentDTO.getScoredRating());
-        comment.setTextBody(commentDTO.getTextBody());
-        comment.setPublishedDate(commentDTO.getPublishedDate());
+    private MainComment convertToCommentEntity(CommentDTO commentDTO) {
+        MainComment mainComment = new MainComment();
+        mainComment.setId(commentDTO.getId());
+        mainComment.setScoredRating(commentDTO.getScoredRating());
+        mainComment.setTextBody(commentDTO.getTextBody());
+        mainComment.setPublishedDate(commentDTO.getPublishedDate());
         //comment.setAnswers(commentDTO.getAnswers());
-        BeanUtils.copyProperties(commentDTO.getAnswers(), comment.getAnswers());
-        return comment;
+        BeanUtils.copyProperties(commentDTO.getAnswers(), mainComment.getAnswers());
+        return mainComment;
     }
 
 }

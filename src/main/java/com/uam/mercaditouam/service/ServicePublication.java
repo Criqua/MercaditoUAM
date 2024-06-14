@@ -3,7 +3,7 @@ package com.uam.mercaditouam.service;
 import com.uam.mercaditouam.dto.CommentDTO;
 import com.uam.mercaditouam.dto.ImageDTO;
 import com.uam.mercaditouam.dto.PublicationDTO;
-import com.uam.mercaditouam.entities.Comment;
+import com.uam.mercaditouam.entities.MainComment;
 import com.uam.mercaditouam.entities.Image;
 import com.uam.mercaditouam.entities.Publication;
 import com.uam.mercaditouam.repository.IRepoPublication;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +57,7 @@ public class ServicePublication implements IServicePublication{
             publication.setAvailability(publicationDTO.getAvailability());
             publication.setObservations(publicationDTO.getObservations());
             publication.setVisible(publicationDTO.isVisible());
-            publication.setCommentList(null);
+            publication.setMainCommentList(null);
             publication.setPurchaseList(null);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
@@ -88,7 +87,7 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-        publication.setCommentList(
+        publication.setMainCommentList(
                 Optional.ofNullable(publicationDTO.getCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
@@ -117,13 +116,13 @@ public class ServicePublication implements IServicePublication{
         image.setImageData(imageDTO.getImageData());
         return image;
     }
-    private Comment convertToCommentEntity(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setId(commentDTO.getId());
-        comment.setScoredRating(commentDTO.getScoredRating());
-        comment.setTextBody(commentDTO.getTextBody());
-        comment.setPublishedDate(commentDTO.getPublishedDate());
-        BeanUtils.copyProperties(commentDTO.getAnswers(), comment.getAnswers());
-        return comment;
+    private MainComment convertToCommentEntity(CommentDTO commentDTO) {
+        MainComment mainComment = new MainComment();
+        mainComment.setId(commentDTO.getId());
+        mainComment.setScoredRating(commentDTO.getScoredRating());
+        mainComment.setTextBody(commentDTO.getTextBody());
+        mainComment.setPublishedDate(commentDTO.getPublishedDate());
+        BeanUtils.copyProperties(commentDTO.getAnswers(), mainComment.getAnswers());
+        return mainComment;
     }
 }

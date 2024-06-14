@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Publicacion")
@@ -53,7 +52,7 @@ public class Publication {
     @OneToMany(mappedBy = "publication", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Comment> commentList;
+    private List<MainComment> mainCommentList;
 
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Purchase> purchaseList;
