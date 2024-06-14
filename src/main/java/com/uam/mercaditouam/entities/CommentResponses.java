@@ -9,7 +9,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CommentResponses extends Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Comentario_Respuesta")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Comentario")
+    @JoinColumn(name = "ID_Comentario_Padre", referencedColumnName = "ID_Comentario_Padre")
     private MainComment parentMainComment;
 }

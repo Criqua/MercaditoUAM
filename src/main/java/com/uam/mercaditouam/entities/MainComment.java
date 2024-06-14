@@ -11,11 +11,16 @@ import java.util.List;
 @Table(name = "Comentario")
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MainComment extends Comment{
+public class MainComment extends Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_Comentario_Padre")
+    private Long id;
+
     @Column(name = "Calificacion_Otorgada")
     private Integer scoredRating;
 
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "parentMainComment", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentResponses> answers;
 }

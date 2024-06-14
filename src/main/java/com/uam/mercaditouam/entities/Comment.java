@@ -8,11 +8,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Data
 public abstract class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Comentario")
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
     private Student student;
