@@ -2,6 +2,7 @@ package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.CommentDTO;
 import com.uam.mercaditouam.dto.ImageDTO;
+import com.uam.mercaditouam.dto.MainCommentDTO;
 import com.uam.mercaditouam.dto.PublicationDTO;
 import com.uam.mercaditouam.entities.MainComment;
 import com.uam.mercaditouam.entities.Image;
@@ -16,9 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @Service
 public class ServicePublication implements IServicePublication{
+
     @Autowired
     private IRepoPublication repoPublication;
 
@@ -27,11 +28,10 @@ public class ServicePublication implements IServicePublication{
         return repoPublication.findAll();
     }
 
-    @Override
     public <T> T findById(Long id) {
         Publication publication = repoPublication.findById(id).orElse(null);
-        if (publication == null) {
-            return (T) ResponseEntity.badRequest().body("The publicationn does not exist.");
+        if(publication == null) {
+            return (T) ResponseEntity.badRequest().body("The administrator does not exist.");
         }
         return (T) publication;
     }
@@ -70,7 +70,7 @@ public class ServicePublication implements IServicePublication{
     public ResponseEntity<String> updatePublication(PublicationDTO publicationDTO) {
         Publication publication = repoPublication.findById(publicationDTO.getId()).orElse(null);
         if(publication == null) {
-            return ResponseEntity.badRequest().body("User does not exist.");
+            return ResponseEntity.badRequest().body("Publication does not exist.");
         }
         publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
                 .map(imageDTOS -> imageDTOS.stream()
@@ -87,8 +87,13 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
+        if(publicationDTO.getMainCommentList().isEmpty()) {
+            publication.getMainCommentList().clear();
+            repoPublication.save(publication);
+            return ResponseEntity.ok("Publication updated.");
+        }
         publication.setMainCommentList(
-                Optional.ofNullable(publicationDTO.getCommentList())
+                Optional.of(publicationDTO.getMainCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
                                 .collect(Collectors.toList())
@@ -116,13 +121,19 @@ public class ServicePublication implements IServicePublication{
         image.setImageData(imageDTO.getImageData());
         return image;
     }
-    private MainComment convertToCommentEntity(CommentDTO commentDTO) {
+    private MainComment convertToCommentEntity(MainCommentDTO commentDTO) {
         MainComment mainComment = new MainComment();
         mainComment.setId(commentDTO.getId());
         mainComment.setScoredRating(commentDTO.getScoredRating());
         mainComment.setTextBody(commentDTO.getTextBody());
         mainComment.setPublishedDate(commentDTO.getPublishedDate());
+        if(commentDTO.getAnswers().isEmpty()) {
+            commentDTO.getAnswers().clear();
+            mainComment.getAnswers().clear();
+            return mainComment;
+        }
         BeanUtils.copyProperties(commentDTO.getAnswers(), mainComment.getAnswers());
+        mainComment.setAnswers(mainComment.getAnswers());
         return mainComment;
     }
 }

@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 public class StudentDTO extends UserDTO{
 
@@ -27,7 +26,7 @@ public class StudentDTO extends UserDTO{
 
     private List<TicketDTO> ticketList;
 
-    private List<CommentDTO> commentList;
+    private List<MainCommentDTO> mainCommentList;
 
     private List<PurchaseDTO> purchaseList;
 }

@@ -9,9 +9,13 @@ import java.util.List;
 
 @Service
 public interface IServicePublication {
-    public List<Publication> getAll();
-    public <T> T findById(Long id);
+    List<Publication> getAll();
+
+    <T> T findById(Long id);
+
     ResponseEntity<String> createPublication(PublicationDTO publicationDTO);
+
     ResponseEntity<String> updatePublication(PublicationDTO publicationDTO);
+
     ResponseEntity<String> deletePublication(Long id);
 }

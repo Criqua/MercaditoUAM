@@ -2,14 +2,11 @@ package com.uam.mercaditouam.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Data
-public class CommentDTO {
+public class MainCommentDTO extends CommentDTO{
     private Long id;
     private Integer scoredRating;
-    private String textBody;
-    private LocalDateTime publishedDate;
+    private List<CommentResponsesDTO> answers;
 }

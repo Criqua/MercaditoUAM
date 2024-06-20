@@ -15,7 +15,7 @@ public interface IServiceStudent {
 
     public List<Student> getAll();
 
-    <T> T findById(Long cif);
+    <T> T findByCIF(Long cif);
     ResponseEntity<String> saveStudent(StudentDTO studentDTO);
     ResponseEntity<String> updateStudent(StudentDTO studentDTO);
 

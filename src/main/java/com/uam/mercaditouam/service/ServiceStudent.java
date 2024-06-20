@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 @Service
 public class ServiceStudent implements IServiceStudent  {
 
@@ -24,7 +23,7 @@ public class ServiceStudent implements IServiceStudent  {
     }
 
     @Override
-    public <T> T findById(Long cif) {
+    public <T> T findByCIF(Long cif) {
         Student student = repoStudent.findById(cif).orElse(null);
         if(student == null) {
             return (T) ResponseEntity.badRequest().body("El estudiante no existe.");
@@ -53,8 +52,8 @@ public class ServiceStudent implements IServiceStudent  {
             student.setMainCommentList(null);
             repoStudent.save(student);
         } else
-            if(repoStudent.existsById(student.getCIF())) {
-                return ResponseEntity.badRequest().body("User already exists");
+        if(repoStudent.existsById(student.getCIF())) {
+            return ResponseEntity.badRequest().body("User already exists");
         }
 
         return ResponseEntity.ok("User created.");
@@ -113,7 +112,7 @@ public class ServiceStudent implements IServiceStudent  {
                         .orElse(Collections.emptyList())
         );
         student.setMainCommentList(
-                Optional.ofNullable(studentDTO.getCommentList())
+                Optional.ofNullable(studentDTO.getMainCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
                                 .collect(Collectors.toList())
@@ -149,7 +148,14 @@ public class ServiceStudent implements IServiceStudent  {
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-
+        publication.setPurchaseList(
+                Optional.ofNullable(publicationDTO.getPurchaseList())
+                        .map(publicationDTOS -> publicationDTOS.stream()
+                                .map(this::convertToPurchaseEntity)
+                                .collect(Collectors.toList())
+                        )
+                        .orElse(Collections.emptyList())
+        );
         return publication;
     }
 
@@ -169,15 +175,23 @@ public class ServiceStudent implements IServiceStudent  {
         return ticket;
     }
 
-    private MainComment convertToCommentEntity(CommentDTO commentDTO) {
+    private MainComment convertToCommentEntity(MainCommentDTO commentDTO) {
         MainComment mainComment = new MainComment();
         mainComment.setId(commentDTO.getId());
         mainComment.setScoredRating(commentDTO.getScoredRating());
         mainComment.setTextBody(commentDTO.getTextBody());
         mainComment.setPublishedDate(commentDTO.getPublishedDate());
+
         //comment.setAnswers(commentDTO.getAnswers());
         BeanUtils.copyProperties(commentDTO.getAnswers(), mainComment.getAnswers());
         return mainComment;
+    }
+
+    private Purchase convertToPurchaseEntity(PurchaseDTO purchaseDTO) {
+        Purchase purchase = new Purchase();
+        purchase.setId(purchaseDTO.getId());
+        purchase.setPurchaseDate(purchaseDTO.getPurchaseDate());
+        return purchase;
     }
 
 }

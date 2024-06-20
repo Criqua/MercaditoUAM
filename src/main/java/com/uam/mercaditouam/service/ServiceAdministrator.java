@@ -38,6 +38,7 @@ public class ServiceAdministrator implements IServiceAdministrator {
         } else if(repoAdministrator.existsById(administrator.getCIF())) {
             return ResponseEntity.badRequest().body("Administrator already exists.");
         }
+        repoAdministrator.save(administrator);
         return ResponseEntity.ok("Administrator created.");
     }
 
