@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.controller;
 
+import com.uam.mercaditouam.dto.AdministratorDTO;
 import com.uam.mercaditouam.entities.Administrator;
 import com.uam.mercaditouam.service.IServiceAdministrator;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/administrator")
+@CrossOrigin("*")
 public class ControllerAdministrator {
     @Autowired
     private IServiceAdministrator serviceAdministrator;
@@ -21,8 +23,23 @@ public class ControllerAdministrator {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody Administrator administrator) {
-        serviceAdministrator.createAdministrator(administrator);
-        return ResponseEntity.ok("Administrator created.");
+    public ResponseEntity<String> create(@Valid @RequestBody AdministratorDTO administratorDTO) {
+        return serviceAdministrator.createAdministrator(administratorDTO);
+    }
+
+    @DeleteMapping("/delete/{CIF}")
+    public ResponseEntity<String> delete(@PathVariable("CIF")Long cif) {
+        if(cif == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
+        return serviceAdministrator.deleteAdministrator(cif);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@RequestBody AdministratorDTO administratorDTO) {
+        if(administratorDTO.getCIF() == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
+        return serviceAdministrator.updateAdministrator(administratorDTO);
     }
 }
