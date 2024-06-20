@@ -62,6 +62,9 @@ public class ServiceStudent implements IServiceStudent  {
     @Override
     public ResponseEntity<String> updateStudent(StudentDTO studentDTO) {
         Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("User does not exist.");
+        }
         student.setName(studentDTO.getName());
         student.setSurname(studentDTO.getSurname());
         student.setEmail(studentDTO.getEmail());

@@ -8,8 +8,6 @@ import java.util.List;
 
 @Data
 public class CommentDTO {
-    private Long id;
-    private Integer scoredRating;
     private String textBody;
     private LocalDateTime publishedDate;
 }

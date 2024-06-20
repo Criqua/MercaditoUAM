@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/student")
+@CrossOrigin("*")
 public class ControllerStudent {
     @Autowired
     private IServiceStudent serviceStudent;

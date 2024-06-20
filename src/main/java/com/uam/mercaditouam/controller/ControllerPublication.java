@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publication")
+@CrossOrigin("*")
 public class ControllerPublication {
     @Autowired
     private IServicePublication servicePublication;
