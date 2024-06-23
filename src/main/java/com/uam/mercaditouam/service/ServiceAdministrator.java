@@ -45,8 +45,9 @@ public class ServiceAdministrator implements IServiceAdministrator {
     @Override
     public ResponseEntity<String> updateAdministrator(AdministratorDTO administratorDTO) {
         Administrator administrator = repoAdministrator.findById(administratorDTO.getCIF()).orElse(null);
-        administrator = new Administrator();
-        administrator.setCIF(administratorDTO.getCIF());
+        if(administrator == null) {
+            return ResponseEntity.badRequest().body("The cif does not exist.");
+        }
         administrator.setName(administratorDTO.getName());
         administrator.setSurname(administratorDTO.getSurname());
         administrator.setEmail(administratorDTO.getEmail());

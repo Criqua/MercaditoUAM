@@ -29,17 +29,11 @@ public class ControllerAdministrator {
 
     @DeleteMapping("/delete/{CIF}")
     public ResponseEntity<String> delete(@PathVariable("CIF")Long cif) {
-        if(cif == null) {
-            return ResponseEntity.badRequest().body("The cif does not exist.");
-        }
         return serviceAdministrator.deleteAdministrator(cif);
     }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody AdministratorDTO administratorDTO) {
-        if(administratorDTO.getCIF() == null) {
-            return ResponseEntity.badRequest().body("The cif does not exist.");
-        }
         return serviceAdministrator.updateAdministrator(administratorDTO);
     }
 }

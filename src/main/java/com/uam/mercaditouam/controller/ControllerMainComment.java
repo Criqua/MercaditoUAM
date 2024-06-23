@@ -34,17 +34,11 @@ public class ControllerMainComment {
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody MainCommentDTO mainCommentDTO) {
-        if(mainCommentDTO.getId() == null) {
-            return ResponseEntity.badRequest().body("THe comment does not exist.");
-        }
         return serviceMainComment.updateMainComment(mainCommentDTO);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().body("The comment does not exist.");
-        }
         return serviceMainComment.deleteMainComment(id);
     }
 }

@@ -53,17 +53,11 @@ public class ControllerStudent {
 
     @DeleteMapping("/delete/{CIF}")
     public ResponseEntity<String> delete(@PathVariable("CIF") Long cif) {
-        if(cif == null) {
-            return ResponseEntity.badRequest().body("The cif does not exist.");
-        }
         return serviceStudent.deleteStudent(cif);
     }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody StudentDTO studentDTO) {
-        if(studentDTO.getCIF() == null) {
-            return ResponseEntity.badRequest().body("The cif does not exist.");
-        }
         return  serviceStudent.updateStudent(studentDTO);
     }
 }
