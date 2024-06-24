@@ -4,10 +4,11 @@ import com.uam.mercaditouam.dto.CommentResponsesDTO;
 import com.uam.mercaditouam.entities.CommentResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
+@Service
 public interface IServiceCommentResponses {
     public List<CommentResponses> getAll();
     <T> T findById(Long id);
