@@ -44,10 +44,10 @@ public class ControllerStudent {
         if(studentDTO.getPhoneNumber().length() > 12) {
             return ResponseEntity.badRequest().body("El numero no es valido.");
         }
-        if(Objects.equals(studentDTO.getEmail(), "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")) {
+        if (!studentDTO.getEmail().matches("^[A-Za-z0-9._%+-]+@uamv\\.edu\\.ni$")) {
             return ResponseEntity.badRequest().body("El correo no es valido.");
-        }*/
+        }
+        */
         return serviceStudent.saveStudent(studentDTO);
     }
 
