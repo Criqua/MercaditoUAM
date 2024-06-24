@@ -10,7 +10,8 @@ import lombok.Setter;
 @Table(name = "Pago")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-public class Payment {
+public class
+Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Pago")
