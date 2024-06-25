@@ -40,6 +40,7 @@ public class ServiceStudent implements IServiceStudent  {
             student.setName(studentDTO.getName());
             student.setSurname(studentDTO.getSurname());
             student.setEmail(studentDTO.getEmail());
+            student.setPassword(studentDTO.getPassword());
             student.setPhoneNumber(studentDTO.getPhoneNumber());
             student.setPersonalDescription(studentDTO.getPersonalDescription());
             student.setProfilePhoto(studentDTO.getProfilePhoto());
@@ -67,7 +68,6 @@ public class ServiceStudent implements IServiceStudent  {
         }
         student.setName(studentDTO.getName());
         student.setSurname(studentDTO.getSurname());
-        student.setEmail(studentDTO.getEmail());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
         student.setPersonalDescription(studentDTO.getPersonalDescription());
         student.setProfilePhoto(studentDTO.getProfilePhoto());

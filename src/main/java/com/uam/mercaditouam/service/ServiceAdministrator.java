@@ -33,6 +33,7 @@ public class ServiceAdministrator implements IServiceAdministrator {
             administrator.setName(administratorDTO.getName());
             administrator.setSurname(administratorDTO.getSurname());
             administrator.setEmail(administratorDTO.getEmail());
+            administrator.setPassword(administratorDTO.getPassword());
             administrator.setProfilePhoto(administratorDTO.getProfilePhoto());
             administrator.setTicketList(null);
         } else if(repoAdministrator.existsById(administrator.getCIF())) {
@@ -50,7 +51,6 @@ public class ServiceAdministrator implements IServiceAdministrator {
         }
         administrator.setName(administratorDTO.getName());
         administrator.setSurname(administratorDTO.getSurname());
-        administrator.setEmail(administratorDTO.getEmail());
         administrator.setProfilePhoto(administratorDTO.getProfilePhoto());
         administrator.setTicketList(
                 Optional.ofNullable(administratorDTO.getTicketListDTO())

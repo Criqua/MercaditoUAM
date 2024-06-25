@@ -28,6 +28,9 @@ public abstract class User {
     @Email(message = "Correo invalido")
     private String email;
 
+    @Column(name = "Contrasenia")
+    private String password;
+
     @Column(name = "Foto_Perfil", nullable = true)
     private byte[] profilePhoto;
 }
