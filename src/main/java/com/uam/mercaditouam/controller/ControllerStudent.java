@@ -31,7 +31,7 @@ public class ControllerStudent {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@Valid @RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO) {
         /*if(Long.toString(studentDTO.getCIF()).length() != 8) {
             return ResponseEntity.badRequest().body("El CIF no es valido.");
         }
