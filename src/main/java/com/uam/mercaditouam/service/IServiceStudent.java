@@ -20,4 +20,6 @@ public interface IServiceStudent {
     ResponseEntity<String> updateStudent(StudentDTO studentDTO);
 
     ResponseEntity<String> deleteStudent(Long CIF);
+
+    ResponseEntity<String> assignFollowingToStudent(Long idFollowing, Long idFollower);
 }

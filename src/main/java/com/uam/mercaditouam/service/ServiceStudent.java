@@ -136,6 +136,24 @@ public class ServiceStudent implements IServiceStudent  {
         return ResponseEntity.ok("User deleted.");
     }
 
+    @Override
+    public ResponseEntity<String> assignFollowingToStudent(Long idFollowing, Long idFollower) {
+        Set<Student> studentSet = null;
+        Student student = repoStudent.findById(idFollower).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("The user does not exist");
+        }
+        Student following = repoStudent.findById(idFollowing).orElse(null);
+        if(following == null) {
+            return ResponseEntity.badRequest().body("The user does not exist");
+        }
+        studentSet = student.getFollowing();
+        studentSet.add(following);
+        student.setFollowing(studentSet);
+        repoStudent.save(student);
+        return ResponseEntity.ok("Added following users");
+    }
+
 
     /**
      * Agregar al servicio publicacion, cada entidad deberá tener un método similar,

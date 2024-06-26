@@ -60,5 +60,13 @@ public class ControllerStudent {
     public ResponseEntity<String> update(@RequestBody StudentDTO studentDTO) {
         return  serviceStudent.updateStudent(studentDTO);
     }
+
+    @PutMapping("/{idFollowing}/following/{idStudent}")
+    public ResponseEntity<String> assignFollowingToStudent(
+            @PathVariable Long idFollowing,
+            @PathVariable Long idFollower
+            ) {
+        return serviceStudent.assignFollowingToStudent(idFollowing, idFollower);
+    }
 }
 
