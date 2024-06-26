@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
+@CrossOrigin("*")
 public class ControllerTransaction {
     @Autowired
     private IServiceTransaction serviceTransaction;

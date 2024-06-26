@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/purchase")
+@CrossOrigin("*")
 public class ControllerPurchase {
     @Autowired
     private IServicePurchase servicePurchase;
