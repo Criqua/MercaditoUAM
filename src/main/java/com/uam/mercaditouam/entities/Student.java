@@ -19,7 +19,7 @@ public class Student extends User{
     @Column(name = "Descripcion_Personal")
     private String personalDescription;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(
             name = "SeguimientoEstudiante",
             joinColumns = @JoinColumn(name = "ID_Seguidor"),
