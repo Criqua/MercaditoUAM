@@ -23,11 +23,18 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public <T> T findByCIF(Long cif) {
+        var students = repoStudent.findAll();
         Student student = repoStudent.findById(cif).orElse(null);
         if(student == null) {
             return (T) ResponseEntity.badRequest().body("El estudiante no existe.");
         }
-        return (T) student;
+        int index = 0;
+        for(Student s : students) {
+            if(student.equals(s)) {
+                index = students.indexOf(s);
+            }
+        }
+        return (T) students.get(index);
     }
 
     @Override
@@ -155,15 +162,23 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower) {
+        var students = repoStudent.findAll();
         Student student = repoStudent.findById(idFollower).orElse(null);
         if(student == null) {
-            return ResponseEntity.badRequest().body("The user does not exist");
+            return ResponseEntity.badRequest().body("The user does not exist.");
         }
+        int index = 0;
+        for(Student s : students) {
+            if(student.equals(s)) {
+                index = students.indexOf(s);
+            }
+        }
+        Student student1 = students.get(index);
         Student following = repoStudent.findById(idFollowing).orElse(null);
         if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        if(student.getFollowing().isEmpty()) {
+        if(student1.getFollowers().isEmpty()) {
             return ResponseEntity.badRequest().body("Nada");
         }
         return ResponseEntity.badRequest().body("The user is not following");
