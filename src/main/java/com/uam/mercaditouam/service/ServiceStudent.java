@@ -16,7 +16,6 @@ public class ServiceStudent implements IServiceStudent  {
     @Autowired(required = true)
     private IRepoStudent repoStudent;
 
-
     @Override
     public List<Student> getAll() {
         return repoStudent.findAll();
@@ -154,23 +153,21 @@ public class ServiceStudent implements IServiceStudent  {
         return ResponseEntity.ok("Added following users");
     }
 
-    /*@Override
-    public ResponseEntity<String> assignFollowerToStudent(Long idFollower, Long idFollowing) {
-        Set<Student> studentSet = null;
-        Student student = repoStudent.findById(idFollowing).orElse(null);
+    @Override
+    public ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower) {
+        Student student = repoStudent.findById(idFollower).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        Student follower = repoStudent.findById(idFollower).orElse(null);
-        if(follower == null) {
+        Student following = repoStudent.findById(idFollowing).orElse(null);
+        if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        studentSet = student.getFollowers();
-        studentSet.add(follower);
-        student.setFollowers(studentSet);
-        repoStudent.save(student);
-        return ResponseEntity.ok("Added following users");
-    }*/
+        if(student.getFollowing().isEmpty()) {
+            return ResponseEntity.badRequest().body("Nada");
+        }
+        return ResponseEntity.badRequest().body("The user is not following");
+    }
 
     /**
      * Agregar al servicio publicacion, cada entidad deberá tener un método similar,

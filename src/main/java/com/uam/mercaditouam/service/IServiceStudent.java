@@ -22,5 +22,7 @@ public interface IServiceStudent {
     ResponseEntity<String> deleteStudent(Long CIF);
 
     ResponseEntity<String> assignFollowingToStudent(Long idFollowing, Long idFollower);
+
+    ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower);
     //ResponseEntity<String> assignFollowerToStudent(Long idFollower, Long idFollowing);
 }

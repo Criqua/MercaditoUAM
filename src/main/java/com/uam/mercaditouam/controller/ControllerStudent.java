@@ -68,5 +68,13 @@ public class ControllerStudent {
             ) {
         return serviceStudent.assignFollowingToStudent(idFollowing, idFollower);
     }
+
+    @PutMapping("/{idFollowing}/removeFollowing/{idStudent}")
+    public ResponseEntity<String> removeFollowingFromStudent(
+            @PathVariable("idFollowing") Long idFollowing,
+            @PathVariable("idStudent") Long idFollower
+    ) {
+        return serviceStudent.removeFollowingFromStudent(idFollowing, idFollower);
+    }
 }
 
