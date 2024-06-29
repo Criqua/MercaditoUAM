@@ -3,6 +3,7 @@ package com.uam.mercaditouam.service;
 import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.*;
 import com.uam.mercaditouam.repository.IRepoStudent;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class ServiceStudent implements IServiceStudent  {
 
-    @Autowired(required = true)
+    @Autowired
     private IRepoStudent repoStudent;
 
     @Override
@@ -35,6 +36,12 @@ public class ServiceStudent implements IServiceStudent  {
             }
         }
         return (T) students.get(index);
+        /*Student student = repoStudent.findById(cif).orElse(null);
+        if(student == null) {
+            return (T) ResponseEntity.badRequest().body("El estudiante no existe.");
+        }
+        return (T) student;*/
+        //return (T) repoStudent.findByCIF(cif).orElseThrow(() -> new EntityNotFoundException("Student not found"));
     }
 
     @Override
@@ -134,10 +141,18 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public ResponseEntity<String> deleteStudent(Long CIF) {
+        var students = repoStudent.findAll();
         Student student = repoStudent.findById(CIF).orElse(null);
         if(student == null) {
-            return ResponseEntity.badRequest().body("The cif does not exist.");
+            return ResponseEntity.badRequest().body("The user does not exist.");
         }
+        int index = 0;
+        for(Student s : students) {
+            if(student.equals(s)) {
+                index = students.indexOf(s);
+            }
+        }
+        Student student1 = students.get(index);
         repoStudent.deleteById(CIF);
         return ResponseEntity.ok("User deleted.");
     }
@@ -163,7 +178,7 @@ public class ServiceStudent implements IServiceStudent  {
     @Override
     public ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower) {
         var students = repoStudent.findAll();
-        Student student = repoStudent.findById(idFollower).orElse(null);
+        Student student = repoStudent.findByCIF(idFollower).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist.");
         }
@@ -174,14 +189,17 @@ public class ServiceStudent implements IServiceStudent  {
             }
         }
         Student student1 = students.get(index);
-        Student following = repoStudent.findById(idFollowing).orElse(null);
+        student1.getFollowing().size();
+        Student following = repoStudent.findByCIF(idFollowing).orElse(null);
         if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        if(student1.getFollowers().isEmpty()) {
+        if(student1.getFollowing().isEmpty()) {
             return ResponseEntity.badRequest().body("Nada");
         }
-        return ResponseEntity.badRequest().body("The user is not following");
+        student1.getFollowing().remove(following);
+        repoStudent.save(student1);
+        return ResponseEntity.ok("Removed following");
     }
 
     /**

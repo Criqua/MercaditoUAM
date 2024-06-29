@@ -19,7 +19,7 @@ public class Student extends User{
     @Column(name = "Descripcion_Personal")
     private String personalDescription;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "SeguimientoEstudiante",
             joinColumns = @JoinColumn(name = "ID_Seguidor"),
@@ -27,7 +27,7 @@ public class Student extends User{
     )
     private Set<Student> following;
 
-    @ManyToMany(mappedBy = "following")
+    @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private Set<Student> followers;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
