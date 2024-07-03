@@ -14,9 +14,9 @@ public class StudentDTO extends UserDTO{
 
     private String personalDescription;
 
-    private Set<StudentDTO> following;
+    private Set<Long> following;
 
-    private Set<StudentDTO> followers;
+    private Set<Long> followers;
 
     private List<PublicationDTO> publicationList;
 

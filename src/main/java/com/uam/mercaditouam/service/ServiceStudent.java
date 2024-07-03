@@ -58,7 +58,7 @@ public class ServiceStudent implements IServiceStudent  {
             student.setPersonalDescription(studentDTO.getPersonalDescription());
             student.setProfilePhoto(studentDTO.getProfilePhoto());
             student.setFollowing(new HashSet<>());
-            student.setFollowers(new HashSet<>());
+            student.setFollower(new HashSet<>());
             student.setPublicationList(null);
             student.setSentMessages(null);
             student.setReceivedMessages(null);
@@ -86,17 +86,8 @@ public class ServiceStudent implements IServiceStudent  {
         student.setProfilePhoto(studentDTO.getProfilePhoto());
 
         // Actualizar seguidores y seguidos si están presentes en el DTO
-        student.setFollowing(Optional.ofNullable(studentDTO.getFollowing())
-                .map(set -> set.stream()
-                        .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
-                        .collect(Collectors.toSet()))
-                .orElse(new HashSet<>()));
-
-        student.setFollowers(Optional.ofNullable(studentDTO.getFollowers())
-                .map(set -> set.stream()
-                        .map(dto -> repoStudent.findById(dto.getCIF()).orElseThrow(() -> new RuntimeException("Student not found: " + dto.getCIF())))
-                        .collect(Collectors.toSet()))
-                .orElse(new HashSet<>()));
+        student.setFollowing(studentDTO.getFollowing());
+        student.setFollower(studentDTO.getFollowers());
 
         student.setPublicationList(
                 Optional.ofNullable(studentDTO.getPublicationList())
@@ -141,25 +132,16 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public ResponseEntity<String> deleteStudent(Long CIF) {
-        var students = repoStudent.findAll();
         Student student = repoStudent.findById(CIF).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist.");
         }
-        int index = 0;
-        for(Student s : students) {
-            if(student.equals(s)) {
-                index = students.indexOf(s);
-            }
-        }
-        Student student1 = students.get(index);
         repoStudent.deleteById(CIF);
         return ResponseEntity.ok("User deleted.");
     }
 
     @Override
     public ResponseEntity<String> assignFollowingToStudent(Long idFollowing, Long idFollower) {
-        Set<Student> studentSet = null;
         Student student = repoStudent.findById(idFollower).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
@@ -168,37 +150,28 @@ public class ServiceStudent implements IServiceStudent  {
         if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        studentSet = student.getFollowing();
-        studentSet.add(following);
-        student.setFollowing(studentSet);
+        student.getFollowing().add(idFollowing);
+        following.getFollower().add(idFollower);
         repoStudent.save(student);
         return ResponseEntity.ok("Added following users");
     }
 
     @Override
     public ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower) {
-        var students = repoStudent.findAll();
         Student student = repoStudent.findByCIF(idFollower).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist.");
         }
-        int index = 0;
-        for(Student s : students) {
-            if(student.equals(s)) {
-                index = students.indexOf(s);
-            }
-        }
-        Student student1 = students.get(index);
-        student1.getFollowing().size();
         Student following = repoStudent.findByCIF(idFollowing).orElse(null);
         if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
-        if(student1.getFollowing().isEmpty()) {
-            return ResponseEntity.badRequest().body("Nada");
+        if(student.getFollowing().isEmpty()) {
+            return ResponseEntity.badRequest().body("The user is not following anyone");
         }
-        student1.getFollowing().remove(following);
-        repoStudent.save(student1);
+        student.getFollowing().remove(idFollowing);
+        following.getFollower().remove(idFollower);
+        repoStudent.save(student);
         return ResponseEntity.ok("Removed following");
     }
 

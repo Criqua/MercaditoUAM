@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,16 +21,13 @@ public class Student extends User{
     @Column(name = "Descripcion_Personal")
     private String personalDescription;
 
-    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinTable(
-            name = "SeguimientoEstudiante",
-            joinColumns = @JoinColumn(name = "ID_Seguidor"),
-            inverseJoinColumns = @JoinColumn(name = "ID_Seguido")
-    )
-    private Set<Student> following;
+    @ElementCollection
+    @Column(name = "ID_Seguidor")
+    private Set<Long> follower;
 
-    @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    private Set<Student> followers;
+    @ElementCollection
+    @Column(name = "ID_Seguido")
+    private Set<Long> following;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Publication> publicationList;
