@@ -76,5 +76,6 @@ public class ControllerStudent {
     ) {
         return serviceStudent.removeFollowingFromStudent(idFollowing, idFollower);
     }
+
 }
 

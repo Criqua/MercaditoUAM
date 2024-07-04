@@ -2,6 +2,7 @@ package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.*;
+import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +17,9 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Autowired
     private IRepoStudent repoStudent;
+
+    @Autowired
+    private IRepoPublication repoPublication;
 
     @Override
     public List<Student> getAll() {
@@ -179,24 +183,19 @@ public class ServiceStudent implements IServiceStudent  {
      * Agregar al servicio publicacion, cada entidad deberá tener un método similar,
      * a fin de realizar mapeos correctos con diferentes relaciones entre entidades
      */
-    private Publication convertToPublicationEntity(PublicationDTO publicationDTO) {
-        Publication publication = new Publication();
-        publication.setId(publicationDTO.getId());
-        publication.setTitle(publicationDTO.getTitle());
-        publication.setDescription(publicationDTO.getDescription());
-        publication.setPrice(publicationDTO.getPrice());
-        publication.setFeatured(publicationDTO.isFeatured());
-        publication.setAvailability(publicationDTO.getAvailability());
-        publication.setObservations(publicationDTO.getObservations());
-        publication.setVisible(publicationDTO.isVisible());
-        publication.setPurchaseList(
-                Optional.ofNullable(publicationDTO.getPurchaseList())
-                        .map(publicationDTOS -> publicationDTOS.stream()
-                                .map(this::convertToPurchaseEntity)
-                                .collect(Collectors.toList())
-                        )
-                        .orElse(Collections.emptyList())
-        );
+    private Publication convertToPublicationEntity(Long id) {
+        Publication publication = repoPublication.findById(id).orElse(null);
+        Student student = repoStudent.findById(publication.getStudent().getCIF()).orElse(null);
+        publication.setId(publication.getId());
+        publication.setTitle(publication.getTitle());
+        publication.setDescription(publication.getDescription());
+        publication.setPrice(publication.getPrice());
+        publication.setFeatured(publication.isFeatured());
+        publication.setAvailability(publication.getAvailability());
+        publication.setObservations(publication.getObservations());
+        publication.setVisible(publication.isVisible());
+        publication.setPurchaseList(publication.getPurchaseList());
+        publication.setStudent(student);
         return publication;
     }
 

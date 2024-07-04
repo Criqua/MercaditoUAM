@@ -18,4 +18,6 @@ public interface IServicePublication {
     ResponseEntity<String> updatePublication(PublicationDTO publicationDTO);
 
     ResponseEntity<String> deletePublication(Long id);
+
+    ResponseEntity<String> assignStudentToPublication(Long idPublication, Long idStudent);
 }

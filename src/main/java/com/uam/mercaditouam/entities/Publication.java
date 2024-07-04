@@ -7,6 +7,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "Publicacion")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Publication {
     @Id
@@ -14,7 +16,7 @@ public class Publication {
     @Column(name = "ID_Publicacion")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
     private Student student;
 

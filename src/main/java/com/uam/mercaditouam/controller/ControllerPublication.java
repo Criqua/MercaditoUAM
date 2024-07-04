@@ -43,4 +43,12 @@ public class ControllerPublication {
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         return servicePublication.deletePublication(id);
     }
+
+    @PutMapping("/{idPublication}/students/{idStudent}")
+    public ResponseEntity<String> assignStudentToPublication(
+            @PathVariable("idPublication") Long idPublication,
+            @PathVariable("idStudent") Long idStudent
+    ) {
+        return servicePublication.assignStudentToPublication(idPublication, idStudent);
+    }
 }

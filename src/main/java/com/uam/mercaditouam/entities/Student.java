@@ -2,8 +2,10 @@ package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Entity
 @Table(name="Estudiante")
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Student extends User{
     @Column(name = "Telefono")
@@ -29,7 +33,7 @@ public class Student extends User{
     @Column(name = "ID_Seguido")
     private Set<Long> following;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Publication> publicationList;
 
     @OneToMany(mappedBy = "senderStudent", cascade = CascadeType.ALL)

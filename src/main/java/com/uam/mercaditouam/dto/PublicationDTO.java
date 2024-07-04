@@ -31,4 +31,6 @@ public class PublicationDTO {
     private List<MainCommentDTO> mainCommentList;
 
     private List<PurchaseDTO> purchaseList;
+
+    private Long studentId;
 }

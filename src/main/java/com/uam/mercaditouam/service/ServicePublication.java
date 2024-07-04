@@ -7,7 +7,9 @@ import com.uam.mercaditouam.dto.PublicationDTO;
 import com.uam.mercaditouam.entities.MainComment;
 import com.uam.mercaditouam.entities.Image;
 import com.uam.mercaditouam.entities.Publication;
+import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.repository.IRepoPublication;
+import com.uam.mercaditouam.repository.IRepoStudent;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class ServicePublication implements IServicePublication{
 
     @Autowired
     private IRepoPublication repoPublication;
+
+    @Autowired
+    private IRepoStudent repoStudent;
 
     @Override
     public List<Publication> getAll() {
@@ -39,6 +44,10 @@ public class ServicePublication implements IServicePublication{
     @Override
     public ResponseEntity<String> createPublication(PublicationDTO publicationDTO) {
         Publication publication = repoPublication.findById(publicationDTO.getId()).orElse(null);
+        Student student = repoStudent.findById(publicationDTO.getStudentId()).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("The student does not exist");
+        }
         if(publication == null) {
             publication = new Publication();
             publication.setId(publicationDTO.getId());
@@ -59,6 +68,8 @@ public class ServicePublication implements IServicePublication{
             publication.setVisible(publicationDTO.isVisible());
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
+            publication.setStudent(student);
+            student.getPublicationList().add(publication);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
             return ResponseEntity.badRequest().body("Publication already exists.");
@@ -113,6 +124,22 @@ public class ServicePublication implements IServicePublication{
         }
         repoPublication.deleteById(id);
         return ResponseEntity.ok("Publication deleted.");
+    }
+
+    @Override
+    public ResponseEntity<String> assignStudentToPublication(Long idPublication, Long idStudent) {
+        Publication publication = repoPublication.findById(idPublication).orElse(null);
+        if(publication == null) {
+            return ResponseEntity.badRequest().body("The publication does not exist");
+        }
+        Student student = repoStudent.findByCIF(idStudent).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("The user does not exist.");
+        }
+        publication.setStudent(student);
+        student.getPublicationList().add(publication);
+        repoPublication.save(publication);
+        return ResponseEntity.ok("Added user to publication");
     }
 
     private Image convertToImageEntity(ImageDTO imageDTO) {
