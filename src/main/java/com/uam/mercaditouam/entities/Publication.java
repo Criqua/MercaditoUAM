@@ -1,6 +1,7 @@
 package com.uam.mercaditouam.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,14 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
-        property = "cif")
+        property = "id")
 public class Publication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Publicacion")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
     private Student student;
 
