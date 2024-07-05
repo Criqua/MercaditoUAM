@@ -69,7 +69,6 @@ public class ServicePublication implements IServicePublication{
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
             publication.setStudent(student);
-            student.getPublicationList().add(publication);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
             return ResponseEntity.badRequest().body("Publication already exists.");

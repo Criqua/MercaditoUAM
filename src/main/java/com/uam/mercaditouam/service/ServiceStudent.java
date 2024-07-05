@@ -183,9 +183,8 @@ public class ServiceStudent implements IServiceStudent  {
      * Agregar al servicio publicacion, cada entidad deberá tener un método similar,
      * a fin de realizar mapeos correctos con diferentes relaciones entre entidades
      */
-    private Publication convertToPublicationEntity(Long id) {
-        Publication publication = repoPublication.findById(id).orElse(null);
-        Student student = repoStudent.findById(publication.getStudent().getCIF()).orElse(null);
+    private Publication convertToPublicationEntity(PublicationDTO publicationDTO) {
+        Publication publication = repoPublication.findById(publicationDTO.getId()).orElse(null);
         publication.setId(publication.getId());
         publication.setTitle(publication.getTitle());
         publication.setDescription(publication.getDescription());
@@ -195,7 +194,6 @@ public class ServiceStudent implements IServiceStudent  {
         publication.setObservations(publication.getObservations());
         publication.setVisible(publication.isVisible());
         publication.setPurchaseList(publication.getPurchaseList());
-        publication.setStudent(student);
         return publication;
     }
 

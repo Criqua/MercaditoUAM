@@ -18,7 +18,7 @@ public class StudentDTO extends UserDTO{
 
     private Set<Long> followers;
 
-    private List<Long> publicationList;
+    private List<PublicationDTO> publicationList;
 
     private List<MessagingDTO> sentMessages;
 
