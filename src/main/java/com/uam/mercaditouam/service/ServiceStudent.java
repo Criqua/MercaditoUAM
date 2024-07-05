@@ -49,6 +49,16 @@ public class ServiceStudent implements IServiceStudent  {
     }
 
     @Override
+    public ResponseEntity<Student> login(Long cif, String password) {
+        Student student = repoStudent.findByCIF(cif).orElse(null);
+        if (student != null && student.getPassword().equals(password)) {
+            return ResponseEntity.ok(student); // Login exitoso
+        } else {
+            return ResponseEntity.notFound().build(); // Login fallido
+        }
+    }
+
+    @Override
     public ResponseEntity<String> saveStudent(StudentDTO studentDTO) {
         Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
         if(student == null) {

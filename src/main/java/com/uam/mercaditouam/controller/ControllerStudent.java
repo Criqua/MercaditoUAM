@@ -30,6 +30,7 @@ public class ControllerStudent {
         return (T) student;
     }
 
+
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO) {
         /*if(Long.toString(studentDTO.getCIF()).length() != 8) {
@@ -75,6 +76,11 @@ public class ControllerStudent {
             @PathVariable("idStudent") Long idFollower
     ) {
         return serviceStudent.removeFollowingFromStudent(idFollowing, idFollower);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Student> login(@RequestParam Long cif, @RequestParam String password) {
+        return serviceStudent.login(cif, password);
     }
 
 }

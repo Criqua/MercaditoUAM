@@ -25,5 +25,7 @@ public interface IServiceStudent {
 
     ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower);
 
+    ResponseEntity<Student> login(Long cif, String password);
+
     //ResponseEntity<String> assignFollowerToStudent(Long idFollower, Long idFollowing);
 }
