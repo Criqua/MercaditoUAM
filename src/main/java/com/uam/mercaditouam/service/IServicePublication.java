@@ -19,5 +19,5 @@ public interface IServicePublication {
 
     ResponseEntity<String> deletePublication(Long id);
 
-    ResponseEntity<String> assignStudentToPublication(Long idPublication, Long idStudent);
+    //ResponseEntity<String> assignStudentToPublication(Long idPublication, Long idStudent);
 }

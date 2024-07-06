@@ -44,11 +44,11 @@ public class ControllerPublication {
         return servicePublication.deletePublication(id);
     }
 
-    @PutMapping("/{idPublication}/students/{idStudent}")
+    /*@PutMapping("/{idPublication}/students/{idStudent}")
     public ResponseEntity<String> assignStudentToPublication(
             @PathVariable("idPublication") Long idPublication,
             @PathVariable("idStudent") Long idStudent
     ) {
         return servicePublication.assignStudentToPublication(idPublication, idStudent);
-    }
+    }*/
 }

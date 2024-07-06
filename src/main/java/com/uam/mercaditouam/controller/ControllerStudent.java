@@ -79,8 +79,9 @@ public class ControllerStudent {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Student> login(@RequestParam Long cif, @RequestParam String password) {
-        return serviceStudent.login(cif, password);
+    public <T> T login(@RequestParam Long cif, @RequestParam String password) {
+        var login = serviceStudent.login(cif, password);
+        return (T) login;
     }
 
 }

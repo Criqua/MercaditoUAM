@@ -125,7 +125,7 @@ public class ServicePublication implements IServicePublication{
         return ResponseEntity.ok("Publication deleted.");
     }
 
-    @Override
+    /*@Override
     public ResponseEntity<String> assignStudentToPublication(Long idPublication, Long idStudent) {
         Publication publication = repoPublication.findById(idPublication).orElse(null);
         if(publication == null) {
@@ -139,7 +139,7 @@ public class ServicePublication implements IServicePublication{
         student.getPublicationList().add(publication);
         repoPublication.save(publication);
         return ResponseEntity.ok("Added user to publication");
-    }
+    }*/
 
     private Image convertToImageEntity(ImageDTO imageDTO) {
         Image image = new Image();

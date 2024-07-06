@@ -49,12 +49,15 @@ public class ServiceStudent implements IServiceStudent  {
     }
 
     @Override
-    public ResponseEntity<Student> login(Long cif, String password) {
+    public <T> T login(Long cif, String password) {
         Student student = repoStudent.findByCIF(cif).orElse(null);
-        if (student != null && student.getPassword().equals(password)) {
-            return ResponseEntity.ok(student); // Login exitoso
+        if (student == null ) {
+            return (T) ResponseEntity.badRequest().body("The user does not exist"); // Login fallido
+        }
+        if(student.getPassword().equals(password)) {
+            return (T) student;
         } else {
-            return ResponseEntity.notFound().build(); // Login fallido
+            return (T) ResponseEntity.badRequest().body("The password does not match");
         }
     }
 
@@ -95,6 +98,7 @@ public class ServiceStudent implements IServiceStudent  {
         }
         student.setName(studentDTO.getName());
         student.setSurname(studentDTO.getSurname());
+        student.setPassword(studentDTO.getPassword());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
         student.setPersonalDescription(studentDTO.getPersonalDescription());
         student.setProfilePhoto(studentDTO.getProfilePhoto());
