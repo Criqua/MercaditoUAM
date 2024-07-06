@@ -20,7 +20,7 @@ public class MainComment extends Comment {
     @Column(name = "Calificacion_Otorgada")
     private Integer scoredRating;
 
-    @OneToMany(mappedBy = "parentMainComment", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "parentMainCommentId", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentResponses> answers;
 }

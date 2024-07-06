@@ -47,7 +47,7 @@ public class Student extends User{
     @OneToMany(mappedBy = "requesterStudent", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studentId", fetch = FetchType.LAZY)
     private List<MainComment> mainCommentList;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)

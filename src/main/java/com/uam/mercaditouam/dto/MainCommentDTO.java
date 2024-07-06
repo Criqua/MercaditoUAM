@@ -9,4 +9,6 @@ public class MainCommentDTO extends CommentDTO{
     private Long id;
     private Integer scoredRating;
     private List<CommentResponsesDTO> answers;
+    private Long publicationId;
+    private Long studentId;
 }

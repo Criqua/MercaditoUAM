@@ -26,7 +26,7 @@ public class Publication {
     @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
     private Student student;*/
 
-    @Column(name = "ID_Student")
+    @Column(name = "ID_Estudiante")
     private Long studentCIF;
 
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
@@ -60,9 +60,9 @@ public class Publication {
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Messaging> messagingList;
 
-    @OneToMany(mappedBy = "publication", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @OneToMany(mappedBy = "publicationId", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
+    //@EqualsAndHashCode.Exclude
+    //@ToString.Exclude
     private List<MainComment> mainCommentList;
 
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)

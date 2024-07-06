@@ -14,7 +14,8 @@ public class CommentResponses extends Comment {
     @Column(name = "ID_Comentario_Respuesta")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Comentario_Padre", referencedColumnName = "ID_Comentario_Padre")
-    private MainComment parentMainComment;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "ID_Comentario_Padre", referencedColumnName = "ID_Comentario_Padre")
+    @Column(name = "ID_Comentario_Padre")
+    private Long parentMainCommentId;
 }

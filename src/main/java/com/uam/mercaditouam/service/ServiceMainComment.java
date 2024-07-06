@@ -4,7 +4,11 @@ import com.uam.mercaditouam.dto.CommentResponsesDTO;
 import com.uam.mercaditouam.dto.MainCommentDTO;
 import com.uam.mercaditouam.entities.CommentResponses;
 import com.uam.mercaditouam.entities.MainComment;
+import com.uam.mercaditouam.entities.Publication;
+import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.repository.IRepoMainComment;
+import com.uam.mercaditouam.repository.IRepoPublication;
+import com.uam.mercaditouam.repository.IRepoStudent;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,10 @@ import java.util.stream.Collectors;
 public class ServiceMainComment implements IServiceMainComment{
     @Autowired
     private IRepoMainComment repoMainComment;
+    @Autowired
+    private IRepoStudent repoStudent;
+    @Autowired
+    private IRepoPublication repoPublication;
 
     @Override
     public List<MainComment> getAll() {
@@ -38,6 +46,14 @@ public class ServiceMainComment implements IServiceMainComment{
     @Override
     public ResponseEntity<String> createMainComment(MainCommentDTO mainCommentDTO) {
         MainComment mainComment = repoMainComment.findById(mainCommentDTO.getId()).orElse(null);
+        Publication publication = repoPublication.findById(mainCommentDTO.getPublicationId()).orElse(null);
+        if(publication == null) {
+            return ResponseEntity.badRequest().body("The publication does not exist");
+        }
+        Student student = repoStudent.findById(mainCommentDTO.getStudentId()).orElse(null);
+        if(student == null) {
+            return ResponseEntity.badRequest().body("The student does not exist");
+        }
         if(mainComment == null ) {
             mainComment = new MainComment();
             mainComment.setId(mainCommentDTO.getId());
@@ -45,10 +61,13 @@ public class ServiceMainComment implements IServiceMainComment{
             mainComment.setTextBody(mainCommentDTO.getTextBody());
             mainComment.setPublishedDate(mainCommentDTO.getPublishedDate());
             mainComment.setAnswers(null);
+            mainComment.setPublicationId(mainCommentDTO.getPublicationId());
+            mainComment.setStudentId(mainCommentDTO.getStudentId());
         } else if(repoMainComment.existsById(mainComment.getId())) {
             return ResponseEntity.badRequest().body("Comment already exists.");
         }
-        return ResponseEntity.ok("Comment created;");
+        repoMainComment.save(mainComment);
+        return ResponseEntity.ok("Comment created");
     }
 
     @Override
