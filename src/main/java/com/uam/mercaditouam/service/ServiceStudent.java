@@ -80,7 +80,7 @@ public class ServiceStudent implements IServiceStudent  {
             student.setSentMessages(null);
             student.setReceivedMessages(null);
             student.setTicketList(null);
-            student.setMainCommentList(null);
+            //student.setMainCommentList(null);
             repoStudent.save(student);
         } else
         if(repoStudent.existsById(student.getCIF())) {
@@ -136,14 +136,14 @@ public class ServiceStudent implements IServiceStudent  {
                         )
                         .orElse(Collections.emptyList())
         );
-        student.setMainCommentList(
+        /*student.setMainCommentList(
                 Optional.ofNullable(studentDTO.getMainCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToCommentEntity)
                                 .collect(Collectors.toList())
                         )
                         .orElse(Collections.emptyList())
-        );
+        );*/
         repoStudent.save(student);
         return ResponseEntity.ok("User updated");
     }
