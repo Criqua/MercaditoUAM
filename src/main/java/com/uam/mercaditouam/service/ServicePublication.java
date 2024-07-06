@@ -68,7 +68,8 @@ public class ServicePublication implements IServicePublication{
             publication.setVisible(publicationDTO.isVisible());
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
-            publication.setStudent(student);
+            publication.setStudentCIF(student.getCIF());
+            //student.getPublicationList().add(publication);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
             return ResponseEntity.badRequest().body("Publication already exists.");
@@ -110,7 +111,6 @@ public class ServicePublication implements IServicePublication{
                         )
                         .orElse(Collections.emptyList())
         );
-
         repoPublication.save(publication);
         return ResponseEntity.ok("Publication updated.");
     }
@@ -135,7 +135,7 @@ public class ServicePublication implements IServicePublication{
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist.");
         }
-        publication.setStudent(student);
+        //publication.setStudent(student);
         student.getPublicationList().add(publication);
         repoPublication.save(publication);
         return ResponseEntity.ok("Added user to publication");

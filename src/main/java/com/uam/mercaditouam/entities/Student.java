@@ -18,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
 public class Student extends User{
     @Column(name = "Telefono")
     private String phoneNumber;
@@ -35,7 +34,8 @@ public class Student extends User{
     private Set<Long> following;
 
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "studentCIF",fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Publication> publicationList;
 
     @OneToMany(mappedBy = "senderStudent", cascade = CascadeType.ALL)

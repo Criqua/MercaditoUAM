@@ -13,18 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,
+  //      property = "id")
 public class Publication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Publicacion")
     private Long id;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    /*@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
-    private Student student;
+    private Student student;*/
+
+    @Column(name = "ID_Student")
+    private Long studentCIF;
 
     @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
     private List<Image> imageList;
