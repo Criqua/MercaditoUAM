@@ -32,7 +32,4 @@ public abstract class User {
 
     @Column(name = "Contrasenia")
     private String password;
-
-    @Column(name = "Foto_Perfil", nullable = true)
-    private byte[] profilePhoto;
 }

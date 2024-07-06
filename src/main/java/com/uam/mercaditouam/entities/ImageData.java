@@ -1,14 +1,16 @@
 package com.uam.mercaditouam.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Imagen")
 @Data
-public class Image {
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "DataImagen")
+public class ImageData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Imagen")
@@ -16,9 +18,6 @@ public class Image {
 
     private String name;
     private String type;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Publicacion", referencedColumnName = "ID_Publicacion")
-    private Publication publication;
 
     @Lob
     @Column(name = "Imagen", nullable = false, columnDefinition = "VARBINARY(MAX)")
