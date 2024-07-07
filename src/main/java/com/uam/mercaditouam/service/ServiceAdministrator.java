@@ -34,7 +34,6 @@ public class ServiceAdministrator implements IServiceAdministrator {
             administrator.setSurname(administratorDTO.getSurname());
             administrator.setEmail(administratorDTO.getEmail());
             administrator.setPassword(administratorDTO.getPassword());
-            administrator.setProfilePhoto(administratorDTO.getProfilePhoto());
             administrator.setTicketList(null);
         } else if(repoAdministrator.existsById(administrator.getCIF())) {
             return ResponseEntity.badRequest().body("Administrator already exists.");
@@ -51,7 +50,6 @@ public class ServiceAdministrator implements IServiceAdministrator {
         }
         administrator.setName(administratorDTO.getName());
         administrator.setSurname(administratorDTO.getSurname());
-        administrator.setProfilePhoto(administratorDTO.getProfilePhoto());
         administrator.setTicketList(
                 Optional.ofNullable(administratorDTO.getTicketListDTO())
                         .map(publicationDTOS -> publicationDTOS.stream()

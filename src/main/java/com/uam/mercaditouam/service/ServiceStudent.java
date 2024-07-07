@@ -73,7 +73,6 @@ public class ServiceStudent implements IServiceStudent  {
             student.setPassword(studentDTO.getPassword());
             student.setPhoneNumber(studentDTO.getPhoneNumber());
             student.setPersonalDescription(studentDTO.getPersonalDescription());
-            student.setProfilePhoto(studentDTO.getProfilePhoto());
             student.setFollowing(new HashSet<>());
             student.setFollower(new HashSet<>());
             student.setPublicationList(null);
@@ -101,7 +100,6 @@ public class ServiceStudent implements IServiceStudent  {
         student.setPassword(studentDTO.getPassword());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
         student.setPersonalDescription(studentDTO.getPersonalDescription());
-        student.setProfilePhoto(studentDTO.getProfilePhoto());
 
         // Actualizar seguidores y seguidos si están presentes en el DTO
         student.setFollowing(studentDTO.getFollowing());
