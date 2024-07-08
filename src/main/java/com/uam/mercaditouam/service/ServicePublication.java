@@ -10,11 +10,14 @@ import com.uam.mercaditouam.entities.Publication;
 import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
+import com.uam.mercaditouam.uitl.ImageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +54,7 @@ public class ServicePublication implements IServicePublication{
         if(publication == null) {
             publication = new Publication();
             publication.setId(publicationDTO.getId());
-            publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
+            /*publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
                     .map(imageDTOS -> imageDTOS.stream()
                             .map(this::convertToImageEntity)
                             .collect(Collectors.toList()))
@@ -83,7 +86,7 @@ public class ServicePublication implements IServicePublication{
         if(publication == null) {
             return ResponseEntity.badRequest().body("Publication does not exist.");
         }
-        publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
+        /*publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
                 .map(imageDTOS -> imageDTOS.stream()
                         .map(this::convertToImageEntity)
                         .collect(Collectors.toList()))
@@ -141,10 +144,11 @@ public class ServicePublication implements IServicePublication{
         return ResponseEntity.ok("Added user to publication");
     }*/
 
-    private Image convertToImageEntity(ImageDTO imageDTO) {
-        Image image = new Image();
-        image.setId(imageDTO.getId());
-        image.setImageData(imageDTO.getImageData());
+    private Image convertToImageEntity(MultipartFile file) throws IOException {
+        Image image = Image.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(ImageUtils.compressImage(file.getBytes())).build();
         return image;
     }
     private MainComment convertToCommentEntity(MainCommentDTO commentDTO) {

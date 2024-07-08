@@ -29,7 +29,7 @@ public class Publication {
     @Column(name = "ID_Estudiante")
     private Long studentCIF;
 
-    @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idPublication", fetch = FetchType.LAZY)
     private List<Image> imageList;
 
     @Column(name = "Titulo", nullable = false)
