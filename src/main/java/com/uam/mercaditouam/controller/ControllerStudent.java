@@ -25,11 +25,13 @@ public class ControllerStudent {
         return serviceStudent.getAll();
     }
     @GetMapping("/find/{CIF}")
-    public <T> T findById(@PathVariable("CIF") Long cif) {
-        var student = serviceStudent.findByCIF(cif);
-        return (T) student;
+    public ResponseEntity<Student> findById(@PathVariable("CIF") Long cif) {
+        Student student = serviceStudent.findByCIF(cif);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
     }
-
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO) {
