@@ -9,5 +9,4 @@ public abstract class UserDTO {
     private String surname;
     private String email;
     private String password;
-    private byte[] profilePhoto;
 }
