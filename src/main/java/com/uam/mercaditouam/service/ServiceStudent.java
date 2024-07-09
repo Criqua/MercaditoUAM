@@ -4,16 +4,12 @@ import com.uam.mercaditouam.dto.*;
 import com.uam.mercaditouam.entities.*;
 import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
-import com.uam.mercaditouam.uitl.ImageUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 @Service
@@ -66,7 +62,7 @@ public class ServiceStudent implements IServiceStudent  {
     }
 
     @Override
-    public ResponseEntity<String> saveStudent(StudentDTO studentDTO, MultipartFile file) throws IOException {
+    public ResponseEntity<String> saveStudent(StudentDTO studentDTO) {
         Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
         if(student == null) {
             student = new Student();
@@ -83,11 +79,6 @@ public class ServiceStudent implements IServiceStudent  {
             student.setSentMessages(null);
             student.setReceivedMessages(null);
             student.setTicketList(null);
-
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            student.setImage(fileName);
-            String uploadDir = "user-photos/" + student.getCIF();
-            ImageUtils.FileUploadUtil.saveFile(uploadDir, fileName, file);
             //student.setMainCommentList(null);
             repoStudent.save(student);
         } else
