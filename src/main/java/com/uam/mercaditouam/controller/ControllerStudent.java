@@ -54,7 +54,7 @@ public class ControllerStudent {
             return ResponseEntity.badRequest().body("El correo no es valido.");
         }
         */
-        return serviceStudent.saveStudent(studentDTO, file);
+        return serviceStudent.saveStudent(studentDTO);
     }
 
     @DeleteMapping("/delete/{CIF}")

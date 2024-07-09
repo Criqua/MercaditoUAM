@@ -18,7 +18,7 @@ public interface IServiceStudent {
     public List<Student> getAll();
 
     <T> T findByCIF(Long cif);
-    ResponseEntity<String> saveStudent(StudentDTO studentDTO, MultipartFile file) throws IOException;
+    ResponseEntity<String> saveStudent(StudentDTO studentDTO) throws IOException;
     ResponseEntity<String> updateStudent(StudentDTO studentDTO);
 
     ResponseEntity<String> deleteStudent(Long CIF);
