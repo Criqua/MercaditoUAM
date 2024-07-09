@@ -11,9 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 @Service
 public class ServiceStudent implements IServiceStudent  {
+
+    private static final Logger LOGGER = Logger.getLogger(ServiceStudent.class.getName());
 
     @Autowired
     private IRepoStudent repoStudent;
@@ -63,9 +66,26 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public ResponseEntity<String> saveStudent(StudentDTO studentDTO) {
-        Student student = repoStudent.findById(studentDTO.getCIF()).orElse(null);
-        if(student == null) {
-            student = new Student();
+
+        LOGGER.info("Recibiendo datos de estudiante desde Android:");
+        LOGGER.info("CIF: " + studentDTO.getCIF());
+        LOGGER.info("Nombre: " + studentDTO.getName());
+        LOGGER.info("Apellido: " + studentDTO.getSurname());
+        LOGGER.info("Email: " + studentDTO.getEmail());
+        LOGGER.info("Contrasena: " + studentDTO.getPassword());
+        LOGGER.info("Teléfono: " + studentDTO.getPhoneNumber());
+        LOGGER.info("Descripcion: " + studentDTO.getPersonalDescription());
+
+
+        if (studentDTO.getCIF() == null) {
+            return ResponseEntity.badRequest().body("El CIF no puede ser nulo.");
+        }
+
+        Optional<Student> optionalStudent = repoStudent.findById(studentDTO.getCIF());
+        if (optionalStudent.isPresent()) {
+            return ResponseEntity.badRequest().body("El estudiante ya existe.");
+        }
+            Student student = new Student();
             student.setCIF(studentDTO.getCIF());
             student.setName(studentDTO.getName());
             student.setSurname(studentDTO.getSurname());
@@ -81,10 +101,6 @@ public class ServiceStudent implements IServiceStudent  {
             student.setTicketList(null);
             //student.setMainCommentList(null);
             repoStudent.save(student);
-        } else
-        if(repoStudent.existsById(student.getCIF())) {
-            return ResponseEntity.badRequest().body("User already exists");
-        }
 
         return ResponseEntity.ok("User created.");
     }
