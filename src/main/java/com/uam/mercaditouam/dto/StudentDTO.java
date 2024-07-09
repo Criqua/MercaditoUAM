@@ -29,4 +29,6 @@ public class StudentDTO extends UserDTO{
     private List<MainCommentDTO> mainCommentList;
 
     private List<PurchaseDTO> purchaseList;
+
+    private String image;
 }

@@ -32,4 +32,7 @@ public abstract class User {
 
     @Column(name = "Contrasenia")
     private String password;
+
+    @Column(name = "Imagen")
+    private String image;
 }

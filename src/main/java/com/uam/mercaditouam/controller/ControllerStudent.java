@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +36,8 @@ public class ControllerStudent {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO,
+                                         @RequestParam("image")MultipartFile file) throws IOException {
         /*if(Long.toString(studentDTO.getCIF()).length() != 8) {
             return ResponseEntity.badRequest().body("El CIF no es valido.");
         }
@@ -51,7 +54,7 @@ public class ControllerStudent {
             return ResponseEntity.badRequest().body("El correo no es valido.");
         }
         */
-        return serviceStudent.saveStudent(studentDTO);
+        return serviceStudent.saveStudent(studentDTO, file);
     }
 
     @DeleteMapping("/delete/{CIF}")
