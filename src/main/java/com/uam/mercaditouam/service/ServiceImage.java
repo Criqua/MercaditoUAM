@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +35,36 @@ public class ServiceImage implements IServiceImage{
     }
 
     @Override
-    public <T> T findByName(String fileName) {
-        Optional<Image> dbImageData = repoImage.findByName(fileName);
-        byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
-        if (image == null) {
-            return (T) ResponseEntity.badRequest().body("The image was not found");
+    public <T> T findById(Long studentId, Long publicationId) {
+        Student student = repoStudent.findById(studentId).orElse(null);
+        Publication publication = repoPublication.findById(publicationId).orElse(null);
+        if(publication == null && student == null) {
+            return (T) ResponseEntity.badRequest().body("At least one id must not be null");
         }
-        return (T) image;
+        boolean studentOrNot = false;
+        if(student != null) {
+            studentOrNot = true;
+        }
+        if(studentOrNot) {
+            Optional<Image> dbImageData = repoImage.findById(student.getProfileImage().getId());
+            byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
+            if (image == null) {
+                return (T) ResponseEntity.badRequest().body("The image was not found");
+            }
+            return (T) image;
+        } else {
+            var amountImages = publication.getImageList().size();
+            List<byte[]> images = new ArrayList<byte[]>(amountImages);
+            for(int i = 0; i < amountImages; i++) {
+                Optional<Image> dbImagesData = repoImage.findById(publication.getImageList().get(i).getId());
+                byte[] image = ImageUtils.decompressImage(dbImagesData.get().getImageData());
+                if (image == null) {
+                    return (T) ResponseEntity.badRequest().body("The image was not found");
+                }
+                images.add(i, image);
+            }
+            return (T) images;
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface IServiceImage {
     public List<Image> getALl();
-    <T> T findByName(String fileName);
+    <T> T findById(Long studentId, Long publicationId);
     ResponseEntity<String> uploadImage(List<MultipartFile> file, Long publicationId, Long studentId) throws IOException;
     ResponseEntity<String> updateImage(ImageDTO imageDTO);
     ResponseEntity<String> deleteImage(Long id);

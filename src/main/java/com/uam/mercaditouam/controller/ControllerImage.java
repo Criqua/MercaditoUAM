@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/image")
+@CrossOrigin("*")
 public class ControllerImage {
     @Autowired
     private IServiceImage serviceImage;
@@ -25,9 +26,10 @@ public class ControllerImage {
         return serviceImage.getALl();
     }
 
-    @GetMapping("/{fileName}")
-    public ResponseEntity<?> downloadImage(@PathVariable String fileName){
-        byte[] imageData = serviceImage.findByName(fileName);
+    @GetMapping("/{studentId}/findImage/{publicationId}")
+    public ResponseEntity<?> downloadImage(@PathVariable("studentId") Long studentId,
+                                           @PathVariable("publicationId") Long publicationId){
+        List<byte[]> imageData = serviceImage.findById(studentId, publicationId);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
