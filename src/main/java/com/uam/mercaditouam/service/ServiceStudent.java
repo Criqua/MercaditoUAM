@@ -31,6 +31,8 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public <T> T findByCIF(Long cif) {
+
+        LOGGER.info("Aqui es findbyCIF");
         var students = repoStudent.findAll();
         Student student = repoStudent.findById(cif).orElse(null);
         if(student == null) {
