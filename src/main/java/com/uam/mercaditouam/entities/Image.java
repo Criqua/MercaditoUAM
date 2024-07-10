@@ -24,7 +24,7 @@ public class Image {
     @Column(name = "ID_Publicacion")
     private Long idPublication;
 
-    @OneToOne(mappedBy = "profileImage")
+    @OneToOne(fetch = FetchType.LAZY)
     private Student student;
 
     @Lob

@@ -2,7 +2,11 @@ package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.ImageDTO;
 import com.uam.mercaditouam.entities.Image;
+import com.uam.mercaditouam.entities.Publication;
+import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.repository.IRepoImage;
+import com.uam.mercaditouam.repository.IRepoPublication;
+import com.uam.mercaditouam.repository.IRepoStudent;
 import com.uam.mercaditouam.uitl.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +22,12 @@ import java.util.Optional;
 public class ServiceImage implements IServiceImage{
     @Autowired
     private IRepoImage repoImage;
+
+    @Autowired
+    private IRepoStudent repoStudent;
+
+    @Autowired
+    private IRepoPublication repoPublication;
     @Override
     public List<Image> getALl() {
         return repoImage.findAll();
@@ -33,15 +44,41 @@ public class ServiceImage implements IServiceImage{
     }
 
     @Override
-    public ResponseEntity<String> uploadImage(MultipartFile file) throws IOException {
-        Image imageData = repoImage.save(Image.builder()
-                .name(file.getOriginalFilename())
-                .type(file.getContentType())
-                .imageData(ImageUtils.compressImage(file.getBytes())).build());
-        if (imageData != null) {
-            return ResponseEntity.ok("The file" + file.getOriginalFilename() + "was uploaded");
+    public ResponseEntity<String> uploadImage(List<MultipartFile> file, Long publicationId, Long studentId) throws IOException {
+        List<Image> images = new ArrayList<>();
+        if(publicationId == null && studentId == null) {
+            return ResponseEntity.badRequest().body("At least one id must not be null");
         }
-        return null;
+        Publication publication = repoPublication.findById(publicationId).orElse(null);
+        Student student = repoStudent.findById(studentId).orElse(null);
+        boolean studentOrNot = false;
+        if(student != null) {
+            studentOrNot = true;
+        }
+        int index = 0;
+        for(MultipartFile i : file) {
+            if (studentOrNot) {
+                images.add(Image.builder()
+                        .name(i.getOriginalFilename())
+                        .type(i.getContentType())
+                        .imageData(ImageUtils.compressImage(i.getBytes())).
+                        student(student).build());
+            } else {
+                images.add(Image.builder()
+                        .name(i.getOriginalFilename())
+                        .type(i.getContentType())
+                        .imageData(ImageUtils.compressImage(i.getBytes()))
+                        .idPublication(publicationId).build());
+            }
+            /*images.add(Image.builder()
+                    .name(i.getOriginalFilename())
+                    .type(i.getContentType())
+                    .imageData(ImageUtils.compressImage(i.getBytes())).idPublication(publicationId).build());
+*/
+            index++;
+        }
+        repoImage.saveAll(images);
+        return ResponseEntity.badRequest().body("The file was not uploaded");
     }
 
     @Override

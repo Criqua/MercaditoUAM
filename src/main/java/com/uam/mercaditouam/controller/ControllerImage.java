@@ -3,6 +3,7 @@ package com.uam.mercaditouam.controller;
 import com.uam.mercaditouam.dto.ImageDTO;
 import com.uam.mercaditouam.entities.Image;
 import com.uam.mercaditouam.service.IServiceImage;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,10 +34,18 @@ public class ControllerImage {
 
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("image")MultipartFile file) {
+    //@PostMapping("/{idPublication}/upload/{idStudent}")
+    @RequestMapping(
+            path = "/{idPublication}/upload/{idStudent}",
+            method = RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<String> uploadImage(@RequestPart("file") @ApiParam(value = "File", required = true)
+                                                  List<MultipartFile> file,
+                                              @PathVariable("idPublication") Long idPublication,
+                                              @PathVariable("idStudent") Long idStudent) {
         try {
-            return serviceImage.uploadImage(file);
+            return serviceImage.uploadImage(file, idPublication, idStudent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

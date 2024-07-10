@@ -33,8 +33,7 @@ public class Student extends User{
     @Column(name = "ID_Seguido")
     private Set<Long> following;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Imagen")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "student")
     private Image profileImage;
     //@OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "studentCIF",fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
