@@ -32,7 +32,6 @@ public class ServiceStudent implements IServiceStudent  {
     @Override
     public <T> T findByCIF(Long cif) {
 
-        LOGGER.info("Aqui es findbyCIF");
         var students = repoStudent.findAll();
         Student student = repoStudent.findById(cif).orElse(null);
         if(student == null) {
@@ -55,7 +54,7 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public <T> T login(Long cif, String password) {
-        Student student = repoStudent.findByCIF(cif).orElse(null);
+        Student student = repoStudent.findById(cif).orElse(null);
         if (student == null ) {
             return (T) ResponseEntity.badRequest().body("The user does not exist"); // Login fallido
         }
@@ -192,11 +191,11 @@ public class ServiceStudent implements IServiceStudent  {
 
     @Override
     public ResponseEntity<String> removeFollowingFromStudent(Long idFollowing, Long idFollower) {
-        Student student = repoStudent.findByCIF(idFollower).orElse(null);
+        Student student = repoStudent.findById(idFollower).orElse(null);
         if(student == null) {
             return ResponseEntity.badRequest().body("The user does not exist.");
         }
-        Student following = repoStudent.findByCIF(idFollowing).orElse(null);
+        Student following = repoStudent.findById(idFollowing).orElse(null);
         if(following == null) {
             return ResponseEntity.badRequest().body("The user does not exist");
         }
