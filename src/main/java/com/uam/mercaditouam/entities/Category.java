@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -18,4 +19,8 @@ public class Category {
 
     @Column(name = "Nombre")
     private String name;
+
+    @OneToMany(mappedBy = "categoryId", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Publication> publicationList;
 }

@@ -54,14 +54,6 @@ public class ServicePublication implements IServicePublication{
         if(publication == null) {
             publication = new Publication();
             publication.setId(publicationDTO.getId());
-            /*publication.setImageList(Optional.ofNullable(publicationDTO.getImageList())
-                    .map(imageDTOS -> imageDTOS.stream()
-                            .map(this::convertToImageEntity)
-                            .collect(Collectors.toList()))
-                    .orElse(Collections.emptyList()));
-            /*if (publication.getImageList().isEmpty()) {
-                return ResponseEntity.badRequest().body("Publications should at least have one image.");
-            }*/
             publication.setTitle(publicationDTO.getTitle());
             publication.setDescription(publicationDTO.getDescription());
             publication.setPrice(publicationDTO.getPrice());
@@ -72,12 +64,7 @@ public class ServicePublication implements IServicePublication{
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
             publication.setStudentCIF(student.getCIF());
-            /*Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
-            if (category == null) {
-                return ResponseEntity.badRequest().body("The category does not exist");
-            }
-            publication.setCategory(category);*/
-            //student.getPublicationList().add(publication);
+            publication.setCategoryId(publicationDTO.getCategoryId());
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
             return ResponseEntity.badRequest().body("Publication already exists.");
@@ -106,11 +93,7 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-        /*Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
-        if (category == null) {
-            return ResponseEntity.badRequest().body("The category does not exist");
-        }
-        publication.setCategory(category);*/
+        publication.setCategoryId(publicationDTO.getCategoryId());
         repoPublication.save(publication);
         return ResponseEntity.ok("Publication updated.");
     }

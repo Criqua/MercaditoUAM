@@ -34,5 +34,5 @@ public class PublicationDTO {
 
     private Long studentId;
 
-    //private Category category;
+    private Long categoryId;
 }
