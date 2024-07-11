@@ -72,11 +72,11 @@ public class ServicePublication implements IServicePublication{
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
             publication.setStudentCIF(student.getCIF());
-            Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
+            /*Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
             if (category == null) {
                 return ResponseEntity.badRequest().body("The category does not exist");
             }
-            publication.setCategory(category);
+            publication.setCategory(category);*/
             //student.getPublicationList().add(publication);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
@@ -106,11 +106,11 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-        Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
+        /*Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
         if (category == null) {
             return ResponseEntity.badRequest().body("The category does not exist");
         }
-        publication.setCategory(category);
+        publication.setCategory(category);*/
         repoPublication.save(publication);
         return ResponseEntity.ok("Publication updated.");
     }

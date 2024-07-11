@@ -38,8 +38,8 @@ public class Publication {
     @Column(name = "Descripcion", nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Category category;
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    private Category category;*/
 
     @Column(name = "Precio", nullable = false)
     private Double price;
