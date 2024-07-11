@@ -11,9 +11,10 @@ import java.util.List;
 
 @Service
 public interface IServiceImage {
-    public List<Image> getALl();
-    <T> T findById(Long studentId, Long publicationId);
+    <T> T findByStudentId(Long studentId);
+    <T> T findByImageId(Long imageId);
     ResponseEntity<String> uploadImage(List<MultipartFile> file, Long publicationId, Long studentId) throws IOException;
-    ResponseEntity<String> updateImage(ImageDTO imageDTO);
     ResponseEntity<String> deleteImage(Long id);
+
+    <T> T getImagesIDs(Long id);
 }

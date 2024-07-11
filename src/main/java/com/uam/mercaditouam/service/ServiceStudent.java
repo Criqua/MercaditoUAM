@@ -120,19 +120,19 @@ public class ServiceStudent implements IServiceStudent  {
         student.setPersonalDescription(studentDTO.getPersonalDescription());
 
         // Actualizar seguidores y seguidos si están presentes en el DTO
-        student.setFollowing(studentDTO.getFollowing());
-        student.setFollower(studentDTO.getFollowers());
+        //student.setFollowing(studentDTO.getFollowing());
+        //student.setFollower(studentDTO.getFollowers());
 
-        student.setPublicationList(
+        /*student.setPublicationList(
                 Optional.ofNullable(studentDTO.getPublicationList())
                         .map(publicationDTOS -> publicationDTOS.stream()
                                 .map(this::convertToPublicationEntity)
                                 .collect(Collectors.toList())
                         )
                         .orElse(Collections.emptyList())
-        );
+        );*/
         // Seguir mismo procedimiento para cada relacion OneToMany
-        student.setSentMessages(Optional.ofNullable(studentDTO.getSentMessages())
+        /*student.setSentMessages(Optional.ofNullable(studentDTO.getSentMessages())
                 .map(messagingDTOS -> messagingDTOS.stream()
                         .map(this::convertToMessagingEntity).collect(Collectors.toList()))
                 .orElse(Collections.emptyList())
@@ -151,7 +151,7 @@ public class ServiceStudent implements IServiceStudent  {
                                 .collect(Collectors.toList())
                         )
                         .orElse(Collections.emptyList())
-        );
+        );*/
         /*student.setMainCommentList(
                 Optional.ofNullable(studentDTO.getMainCommentList())
                         .map(publicationDTOS -> publicationDTOS.stream()

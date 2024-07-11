@@ -9,6 +9,8 @@ import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
 import com.uam.mercaditouam.uitl.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,42 +31,33 @@ public class ServiceImage implements IServiceImage{
 
     @Autowired
     private IRepoPublication repoPublication;
+
     @Override
-    public List<Image> getALl() {
-        return repoImage.findAll();
+    public <T> T findByStudentId(Long studentId) {
+        Student student = repoStudent.findById(studentId).orElse(null);
+        if(student == null) {
+            return (T) ResponseEntity.badRequest().body("The student does not exist");
+        }
+        Optional<Image> dbImageData = repoImage.findById(student.getProfileImage().getId());
+        byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
+        if (image == null) {
+            return (T) ResponseEntity.badRequest().body("The image was not found");
+        }
+        return (T) ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 
     @Override
-    public <T> T findById(Long studentId, Long publicationId) {
-        Student student = repoStudent.findById(studentId).orElse(null);
-        Publication publication = repoPublication.findById(publicationId).orElse(null);
-        if(publication == null && student == null) {
-            return (T) ResponseEntity.badRequest().body("At least one id must not be null");
+    public <T> T findByImageId(Long imageId) {
+        Optional<Image> dbImageData = repoImage.findById(imageId);
+        byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
+        if (image == null) {
+            return (T) ResponseEntity.badRequest().body("The image was not found");
         }
-        boolean studentOrNot = false;
-        if(student != null) {
-            studentOrNot = true;
-        }
-        if(studentOrNot) {
-            Optional<Image> dbImageData = repoImage.findById(student.getProfileImage().getId());
-            byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
-            if (image == null) {
-                return (T) ResponseEntity.badRequest().body("The image was not found");
-            }
-            return (T) image;
-        } else {
-            var amountImages = publication.getImageList().size();
-            List<byte[]> images = new ArrayList<byte[]>(amountImages);
-            for(int i = 0; i < amountImages; i++) {
-                Optional<Image> dbImagesData = repoImage.findById(publication.getImageList().get(i).getId());
-                byte[] image = ImageUtils.decompressImage(dbImagesData.get().getImageData());
-                if (image == null) {
-                    return (T) ResponseEntity.badRequest().body("The image was not found");
-                }
-                images.add(i, image);
-            }
-            return (T) images;
-        }
+        return (T) ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(image);
     }
 
     @Override
@@ -94,26 +87,10 @@ public class ServiceImage implements IServiceImage{
                         .imageData(ImageUtils.compressImage(i.getBytes()))
                         .idPublication(publicationId).build());
             }
-            /*images.add(Image.builder()
-                    .name(i.getOriginalFilename())
-                    .type(i.getContentType())
-                    .imageData(ImageUtils.compressImage(i.getBytes())).idPublication(publicationId).build());
-*/
             index++;
         }
         repoImage.saveAll(images);
-        return ResponseEntity.badRequest().body("The file was not uploaded");
-    }
-
-    @Override
-    public ResponseEntity<String> updateImage(ImageDTO imageDTO) {
-        Image image = repoImage.findById(imageDTO.getId()).orElse(null);
-        if(image == null) {
-            return ResponseEntity.badRequest().body("The image does not exist");
-        }
-        image.setImageData(imageDTO.getImageData());
-        repoImage.save(image);
-        return ResponseEntity.ok("Image updated");
+        return ResponseEntity.ok("File uploaded");
     }
 
     @Override
@@ -124,5 +101,20 @@ public class ServiceImage implements IServiceImage{
         }
         repoImage.deleteById(id);
         return ResponseEntity.ok("Image deleted");
+    }
+
+    @Override
+    public <T> T getImagesIDs(Long id) {
+        Publication publication = repoPublication.findById(id).orElse(null);
+        if(publication == null) {
+            return (T) ResponseEntity.badRequest().body("The publication does not exist");
+        }
+        Integer imagesAmount = publication.getImageList().size();
+        List<Integer> imagesIDs = new ArrayList<>();
+        for (int i = 0; i < imagesAmount; i++) {
+            Image image = repoImage.findById(publication.getImageList().get(i).getId()).orElse(null);
+            imagesIDs.add(Math.toIntExact(image.getId()));
+        }
+        return (T) imagesIDs;
     }
 }

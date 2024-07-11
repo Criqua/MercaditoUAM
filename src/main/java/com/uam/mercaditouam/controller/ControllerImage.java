@@ -20,20 +20,14 @@ import java.util.List;
 public class ControllerImage {
     @Autowired
     private IServiceImage serviceImage;
-
-    @GetMapping("/all")
-    public List<Image> getAll() {
-        return serviceImage.getALl();
+    @GetMapping("/findStudentImage/{studentId}")
+    public ResponseEntity<?> downloadStudentImage(@PathVariable("studentId") Long studentId){
+        return serviceImage.findByStudentId(studentId);
     }
 
-    @GetMapping("/{studentId}/findImage/{publicationId}")
-    public ResponseEntity<?> downloadImage(@PathVariable("studentId") Long studentId,
-                                           @PathVariable("publicationId") Long publicationId){
-        List<byte[]> imageData = serviceImage.findById(studentId, publicationId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(imageData);
-
+    @GetMapping("/findPublicationImage/{imageId}")
+    public ResponseEntity<?> downloadPublicationImage(@PathVariable("imageId") Long imageId) {
+        return serviceImage.findByImageId(imageId);
     }
 
     //@PostMapping("/{idPublication}/upload/{idStudent}")
@@ -53,13 +47,13 @@ public class ControllerImage {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody ImageDTO imageDTO) {
-        return serviceImage.updateImage(imageDTO);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
         return serviceImage.deleteImage(id);
+    }
+
+    @GetMapping("/getImagesIDs/{publicationId}")
+    public <T> T getImagesIDs(@PathVariable("publicationId") Long id) {
+        return serviceImage.getImagesIDs(id);
     }
 }

@@ -39,7 +39,6 @@ public class Publication {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Caregoria", referencedColumnName = "ID_Categoria")
     private Category category;
 
     @Column(name = "Precio", nullable = false)

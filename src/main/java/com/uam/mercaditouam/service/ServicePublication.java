@@ -4,10 +4,8 @@ import com.uam.mercaditouam.dto.CommentDTO;
 import com.uam.mercaditouam.dto.ImageDTO;
 import com.uam.mercaditouam.dto.MainCommentDTO;
 import com.uam.mercaditouam.dto.PublicationDTO;
-import com.uam.mercaditouam.entities.MainComment;
-import com.uam.mercaditouam.entities.Image;
-import com.uam.mercaditouam.entities.Publication;
-import com.uam.mercaditouam.entities.Student;
+import com.uam.mercaditouam.entities.*;
+import com.uam.mercaditouam.repository.IRepoCategory;
 import com.uam.mercaditouam.repository.IRepoPublication;
 import com.uam.mercaditouam.repository.IRepoStudent;
 import com.uam.mercaditouam.uitl.ImageUtils;
@@ -30,6 +28,8 @@ public class ServicePublication implements IServicePublication{
 
     @Autowired
     private IRepoStudent repoStudent;
+    @Autowired
+    private IRepoCategory repoCategory;
 
     @Override
     public List<Publication> getAll() {
@@ -72,6 +72,11 @@ public class ServicePublication implements IServicePublication{
             publication.setMainCommentList(null);
             publication.setPurchaseList(null);
             publication.setStudentCIF(student.getCIF());
+            Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
+            if (category == null) {
+                return ResponseEntity.badRequest().body("The category does not exist");
+            }
+            publication.setCategory(category);
             //student.getPublicationList().add(publication);
             repoPublication.save(publication);
         } else if (repoPublication.existsById(publication.getId())) {
@@ -101,19 +106,11 @@ public class ServicePublication implements IServicePublication{
         publication.setAvailability(publicationDTO.getAvailability());
         publication.setObservations(publicationDTO.getObservations());
         publication.setVisible(publicationDTO.isVisible());
-        if(publicationDTO.getMainCommentList().isEmpty()) {
-            publication.getMainCommentList().clear();
-            repoPublication.save(publication);
-            return ResponseEntity.ok("Publication updated.");
+        Category category = repoCategory.findById(publicationDTO.getCategory().getId()).orElse(null);
+        if (category == null) {
+            return ResponseEntity.badRequest().body("The category does not exist");
         }
-        publication.setMainCommentList(
-                Optional.of(publicationDTO.getMainCommentList())
-                        .map(publicationDTOS -> publicationDTOS.stream()
-                                .map(this::convertToCommentEntity)
-                                .collect(Collectors.toList())
-                        )
-                        .orElse(Collections.emptyList())
-        );
+        publication.setCategory(category);
         repoPublication.save(publication);
         return ResponseEntity.ok("Publication updated.");
     }
