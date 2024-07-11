@@ -10,4 +10,7 @@ import java.time.LocalDateTime;
 public class PurchaseDTO {
     private Long id;
     private LocalDateTime purchaseDate;
+
+    private Long publicationId;
+    private Long studentId;
 }

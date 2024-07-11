@@ -1,6 +1,7 @@
 package com.uam.mercaditouam.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -56,7 +57,8 @@ public class Publication {
     @Column(name = "Esta_Visible")
     private boolean isVisible;
 
-    @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publicationId", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Messaging> messagingList;
 
     @OneToMany(mappedBy = "publicationId", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -64,6 +66,6 @@ public class Publication {
     //@ToString.Exclude
     private List<MainComment> mainCommentList;
 
-    @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publicationId", fetch = FetchType.LAZY)
     private List<Purchase> purchaseList;
 }

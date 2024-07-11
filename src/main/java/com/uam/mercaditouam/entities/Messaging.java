@@ -16,17 +16,14 @@ public class Messaging {
     @Column(name = "ID_Chat")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Publicacion", referencedColumnName = "ID_Publicacion")
-    private Publication publication;
+    @Column(name = "ID_Publicacion")
+    private Long publicationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CIF_Remitente", referencedColumnName = "CIF")
-    private Student senderStudent;
+    @Column(name = "CIF_Remitente")
+    private Long senderStudent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CIF_Destinatario", referencedColumnName = "CIF")
-    private Student recipientStudent;
+    @Column(name = "CIF_Destinatario")
+    private Long recipientStudent;
 
     @Column(name = "Contenido")
     private String content;

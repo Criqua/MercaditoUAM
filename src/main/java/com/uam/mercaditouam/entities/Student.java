@@ -39,10 +39,10 @@ public class Student extends User{
     @OneToMany(mappedBy = "studentCIF",fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Publication> publicationList;
 
-    @OneToMany(mappedBy = "senderStudent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "senderStudent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Messaging> sentMessages;
 
-    @OneToMany(mappedBy = "recipientStudent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipientStudent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Messaging> receivedMessages;
 
     @OneToMany(mappedBy = "requesterStudent", fetch = FetchType.LAZY)
@@ -51,6 +51,6 @@ public class Student extends User{
     //@OneToMany(mappedBy = "studentId", fetch = FetchType.LAZY)
     //private List<MainComment> mainCommentList;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studentId", fetch = FetchType.LAZY)
     private List<Purchase> purchaseList;
 }

@@ -16,13 +16,11 @@ public class Purchase {
     @Column(name = "ID_Compra")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Publicacion", referencedColumnName = "ID_Publicacion")
-    private Publication publication;
+    @Column(name = "ID_Publicacion")
+    private Long publicationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CIF_Estudiante", referencedColumnName = "CIF")
-    private Student student;
+    @Column(name = "CIF_Estudiante")
+    private Long studentId;
 
     @Column(name = "Fecha_Compra")
     private LocalDateTime purchaseDate;

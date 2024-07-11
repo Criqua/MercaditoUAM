@@ -2,7 +2,11 @@ package com.uam.mercaditouam.service;
 
 import com.uam.mercaditouam.dto.MessagingDTO;
 import com.uam.mercaditouam.entities.Messaging;
+import com.uam.mercaditouam.entities.Publication;
+import com.uam.mercaditouam.entities.Student;
 import com.uam.mercaditouam.repository.IRepoMessaging;
+import com.uam.mercaditouam.repository.IRepoPublication;
+import com.uam.mercaditouam.repository.IRepoStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,10 @@ import java.util.List;
 public class ServiceMessaging implements IServiceMessaging{
     @Autowired
     private IRepoMessaging repoMessaging;
+    @Autowired
+    private IRepoPublication repoPublication;
+    @Autowired
+    private IRepoStudent repoStudent;
 
     @Override
     public List<Messaging> getAll() {
@@ -36,6 +44,21 @@ public class ServiceMessaging implements IServiceMessaging{
             messaging.setId(messagingDTO.getId());
             messaging.setContent(messagingDTO.getContent());
             messaging.setSubmittedDate(messagingDTO.getSubmittedDate());
+            Publication publication = repoPublication.findById(messagingDTO.getPublicationId()).orElse(null);
+            if(publication == null) {
+                return ResponseEntity.badRequest().body("The publication does not exist");
+            }
+            messaging.setPublicationId(messagingDTO.getPublicationId());
+            Student senderStudent = repoStudent.findById(messagingDTO.getSenderStudent()).orElse(null);
+            if(senderStudent == null) {
+                return ResponseEntity.badRequest().body("The sender student does not exist");
+            }
+            messaging.setSenderStudent(messagingDTO.getSenderStudent());
+            Student recipientStudent = repoStudent.findById(messagingDTO.getRecipientStudent()).orElse(null);
+            if(recipientStudent == null) {
+                return ResponseEntity.badRequest().body("The recipient student does not exist");
+            }
+            messaging.setRecipientStudent(messagingDTO.getRecipientStudent());
             repoMessaging.save(messaging);
         } else if(repoMessaging.existsById(messaging.getId())) {
             return ResponseEntity.badRequest().body("Messaging already exists");
