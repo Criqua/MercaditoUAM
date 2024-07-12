@@ -38,11 +38,11 @@ public class ServiceImage implements IServiceImage{
         if(student == null) {
             return (T) ResponseEntity.badRequest().body("The student does not exist");
         }
-        Optional<Image> dbImageData = repoImage.findById(student.getProfileImage().getId());
-        byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
-        if (image == null) {
+        if(student.getProfileImage() == null) {
             return (T) ResponseEntity.badRequest().body("The image was not found");
         }
+        Optional<Image> dbImageData = repoImage.findById(student.getProfileImage().getId());
+        byte[] image = ImageUtils.decompressImage(dbImageData.get().getImageData());
         return (T) ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(image);
