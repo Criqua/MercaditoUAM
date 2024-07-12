@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface IServicePublication {
     List<Publication> getAll();
-
+    List<Publication> getRecentPublications();
     <T> T findById(Long id);
 
     ResponseEntity<String> createPublication(PublicationDTO publicationDTO);

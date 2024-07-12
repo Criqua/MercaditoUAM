@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,15 @@ public class ServicePublication implements IServicePublication{
     @Override
     public List<Publication> getAll() {
         return repoPublication.findAll();
+    }
+
+    @Override
+    public List<Publication> getRecentPublications() {
+        /*List<Publication> publicationList = new ArrayList<>();
+        for(int i = 0; i < 5; i++) {
+           // Publication publication = repoPublication.findBy()
+        }*/
+        return repoPublication.findTop6ByOrderByIdDesc();
     }
 
     public <T> T findById(Long id) {

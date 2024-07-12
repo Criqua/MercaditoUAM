@@ -28,6 +28,10 @@ public class ControllerPublication {
         return (T) publication;
     }
 
+    @GetMapping("/getMostRecentPublications")
+    public <T> T getRecentPublications() {
+        return (T) servicePublication.getRecentPublications();
+    }
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody PublicationDTO publicationDTO) {
         //comprobaciones
