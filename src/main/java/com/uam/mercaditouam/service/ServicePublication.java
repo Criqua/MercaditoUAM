@@ -43,8 +43,20 @@ public class ServicePublication implements IServicePublication{
     }
 
     @Override
-    public List<Publication> getRandomPublications() {
+    public List<Publication> getRandomFeaturedPublications() {
         var publications = repoPublication.findRandomFeaturedPublications();
+        Collections.shuffle(publications);
+        var maxPublications = 6;
+        List<Publication> publicationList = new ArrayList<>();
+        for(int i = 0; i < maxPublications; i++) {
+            publicationList.add(publications.get(i));
+        }
+        return publicationList;
+    }
+
+    @Override
+    public List<Publication> getRandomPublications() {
+        var publications = repoPublication.findAll();
         Collections.shuffle(publications);
         var maxPublications = 6;
         List<Publication> publicationList = new ArrayList<>();

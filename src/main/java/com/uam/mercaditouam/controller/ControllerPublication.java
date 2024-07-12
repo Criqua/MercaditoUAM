@@ -33,6 +33,11 @@ public class ControllerPublication {
         return (T) servicePublication.getRecentPublications();
     }
 
+    @GetMapping("/getRandomFeaturedPublications")
+    public <T> T getRandomFeaturedPublications() {
+        return (T) servicePublication.getRandomFeaturedPublications();
+    }
+
     @GetMapping("/getRandomPublications")
     public <T> T getRandomPublications() {
         return (T) servicePublication.getRandomPublications();
