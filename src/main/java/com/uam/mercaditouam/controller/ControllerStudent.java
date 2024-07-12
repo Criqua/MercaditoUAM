@@ -25,8 +25,6 @@ public class ControllerStudent {
     @Autowired
     private IServiceStudent serviceStudent;
 
-    private static final Logger LOGGER = Logger.getLogger(ServiceStudent.class.getName());
-
     @GetMapping("/all")
     public List<Student> getAll() {
         return serviceStudent.getAll();
@@ -43,9 +41,8 @@ public class ControllerStudent {
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody StudentDTO studentDTO) throws IOException {
 
-        LOGGER.info("waaaaa");
-        LOGGER.info("CIF: " + studentDTO.getCIF());
         /*
+
         if(Long.toString(studentDTO.getCIF()).length() != 8) {
             return ResponseEntity.badRequest().body("El CIF no es valido.");
         }

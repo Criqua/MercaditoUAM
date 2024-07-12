@@ -30,7 +30,6 @@ public class ControllerImage {
         return serviceImage.findByImageId(imageId);
     }
 
-    //@PostMapping("/{idPublication}/upload/{idStudent}")
     @RequestMapping(
             path = "/{idPublication}/upload/{idStudent}",
             method = RequestMethod.POST,
