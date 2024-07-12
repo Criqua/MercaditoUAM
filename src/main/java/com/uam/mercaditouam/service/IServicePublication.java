@@ -17,6 +17,8 @@ public interface IServicePublication {
 
     <T> T findById(Long id);
 
+    List<Long>getRecentPublicationIds();
+
     ResponseEntity<String> createPublication(PublicationDTO publicationDTO);
 
     ResponseEntity<String> updatePublication(PublicationDTO publicationDTO);
