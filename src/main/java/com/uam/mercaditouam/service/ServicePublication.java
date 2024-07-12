@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
-public class ServicePublication implements IServicePublication{
+public abstract class ServicePublication implements IServicePublication{
 
     @Autowired
     private IRepoPublication repoPublication;
@@ -39,31 +39,11 @@ public class ServicePublication implements IServicePublication{
 
     @Override
     public List<Publication> getRecentPublications() {
+        /*List<Publication> publicationList = new ArrayList<>();
+        for(int i = 0; i < 5; i++) {
+           // Publication publication = repoPublication.findBy()
+        }*/
         return repoPublication.findTop6ByOrderByIdDesc();
-    }
-
-    @Override
-    public List<Publication> getRandomFeaturedPublications() {
-        var publications = repoPublication.findRandomFeaturedPublications();
-        Collections.shuffle(publications);
-        var maxPublications = 6;
-        List<Publication> publicationList = new ArrayList<>();
-        for(int i = 0; i < maxPublications; i++) {
-            publicationList.add(publications.get(i));
-        }
-        return publicationList;
-    }
-
-    @Override
-    public List<Publication> getRandomPublications() {
-        var publications = repoPublication.findAll();
-        Collections.shuffle(publications);
-        var maxPublications = 6;
-        List<Publication> publicationList = new ArrayList<>();
-        for(int i = 0; i < maxPublications; i++) {
-            publicationList.add(publications.get(i));
-        }
-        return publicationList;
     }
 
     public <T> T findById(Long id) {

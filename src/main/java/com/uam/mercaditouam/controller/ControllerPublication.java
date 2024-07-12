@@ -42,9 +42,14 @@ public class ControllerPublication {
     public <T> T getRandomPublications() {
         return (T) servicePublication.getRandomPublications();
     }
+
+    @GetMapping("/getMostRecentPublicationsId")
+    public List<Long> getRecentPublicationIds(){
+        return servicePublication.getRecentPublicationIds();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody PublicationDTO publicationDTO) {
-        //comprobaciones
 
         return servicePublication.createPublication(publicationDTO);
     }
