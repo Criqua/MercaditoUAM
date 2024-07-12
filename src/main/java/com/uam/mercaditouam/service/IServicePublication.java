@@ -11,6 +11,8 @@ import java.util.List;
 public interface IServicePublication {
     List<Publication> getAll();
     List<Publication> getRecentPublications();
+    List<Publication> getRandomPublications();
+
     <T> T findById(Long id);
 
     ResponseEntity<String> createPublication(PublicationDTO publicationDTO);

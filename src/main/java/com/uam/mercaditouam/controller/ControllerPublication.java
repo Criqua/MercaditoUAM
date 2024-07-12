@@ -32,6 +32,11 @@ public class ControllerPublication {
     public <T> T getRecentPublications() {
         return (T) servicePublication.getRecentPublications();
     }
+
+    @GetMapping("/getRandomPublications")
+    public <T> T getRandomPublications() {
+        return (T) servicePublication.getRandomPublications();
+    }
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody PublicationDTO publicationDTO) {
         //comprobaciones

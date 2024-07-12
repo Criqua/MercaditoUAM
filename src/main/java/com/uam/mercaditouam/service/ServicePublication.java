@@ -39,11 +39,13 @@ public class ServicePublication implements IServicePublication{
 
     @Override
     public List<Publication> getRecentPublications() {
-        /*List<Publication> publicationList = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {
-           // Publication publication = repoPublication.findBy()
-        }*/
         return repoPublication.findTop6ByOrderByIdDesc();
+    }
+
+    @Override
+    public List<Publication> getRandomPublications() {
+        //return repoPublication.findRandomDestacadas(6);
+        return null;
     }
 
     public <T> T findById(Long id) {
