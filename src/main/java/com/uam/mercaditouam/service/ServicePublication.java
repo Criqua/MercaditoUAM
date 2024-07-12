@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
-public abstract class ServicePublication implements IServicePublication{
+public class ServicePublication implements IServicePublication{
 
     @Autowired
     private IRepoPublication repoPublication;
@@ -46,12 +46,27 @@ public abstract class ServicePublication implements IServicePublication{
         return repoPublication.findTop6ByOrderByIdDesc();
     }
 
+    @Override
+    public List<Publication> getRandomFeaturedPublications() {
+        return null;
+    }
+
+    @Override
+    public List<Publication> getRandomPublications() {
+        return null;
+    }
+
     public <T> T findById(Long id) {
         Publication publication = repoPublication.findById(id).orElse(null);
         if(publication == null) {
             return (T) ResponseEntity.badRequest().body("The administrator does not exist.");
         }
         return (T) publication;
+    }
+
+    @Override
+    public List<Long> getRecentPublicationIds() {
+        return null;
     }
 
     @Override
