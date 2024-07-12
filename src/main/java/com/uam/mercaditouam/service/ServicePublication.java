@@ -66,7 +66,11 @@ public class ServicePublication implements IServicePublication{
 
     @Override
     public List<Long> getRecentPublicationIds() {
-        return null;
+
+        return repoPublication.findTop6ByOrderByIdDesc()
+                .stream()
+                .map(Publication::getId)
+                .collect(Collectors.toList());
     }
 
     @Override
