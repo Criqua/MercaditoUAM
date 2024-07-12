@@ -28,5 +28,4 @@ public class StudentDTO extends UserDTO{
 
     private List<PurchaseDTO> purchaseList;
 
-    private String image;
 }

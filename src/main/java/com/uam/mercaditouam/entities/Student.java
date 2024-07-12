@@ -1,5 +1,6 @@
 package com.uam.mercaditouam.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class Student extends User{
     private Set<Long> following;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "student")
+    @JsonIgnore
     private Image profileImage;
     //@OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "studentCIF",fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
