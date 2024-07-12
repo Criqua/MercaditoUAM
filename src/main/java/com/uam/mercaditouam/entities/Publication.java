@@ -31,6 +31,7 @@ public class Publication {
     private Long studentCIF;
 
     @OneToMany(mappedBy = "idPublication", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Image> imageList;
 
     @Column(name = "Titulo", nullable = false)

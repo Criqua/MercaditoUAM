@@ -44,8 +44,14 @@ public class ServicePublication implements IServicePublication{
 
     @Override
     public List<Publication> getRandomPublications() {
-        //return repoPublication.findRandomDestacadas(6);
-        return null;
+        var publications = repoPublication.findRandomFeaturedPublications();
+        Collections.shuffle(publications);
+        var maxPublications = 6;
+        List<Publication> publicationList = new ArrayList<>();
+        for(int i = 0; i < maxPublications; i++) {
+            publicationList.add(publications.get(i));
+        }
+        return publicationList;
     }
 
     public <T> T findById(Long id) {

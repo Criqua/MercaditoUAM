@@ -12,6 +12,6 @@ import java.util.List;
 public interface IRepoPublication extends JpaRepository<Publication, Long> {
     List<Publication> findTop6ByOrderByIdDesc();
 
-    /*@Query(value = "SELECT TOP :limit * FROM Publication WHERE isFeatured = 1", nativeQuery = true)
-    List<Publication> findRandomDestacadas(@Param("limit") int limit);*/
+    @Query("SELECT p FROM Publication p WHERE p.isFeatured = true ORDER BY FUNCTION('RAND')")
+    List<Publication> findRandomFeaturedPublications();
 }
