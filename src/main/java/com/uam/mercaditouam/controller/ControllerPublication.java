@@ -30,17 +30,17 @@ public class ControllerPublication {
 
     @GetMapping("/getMostRecentPublications")
     public <T> T getRecentPublications() {
-        return (T) servicePublication.getRecentPublications();
+        return (T) servicePublication.getRecentPublicationIds();
     }
 
     @GetMapping("/getRandomFeaturedPublications")
     public <T> T getRandomFeaturedPublications() {
-        return (T) servicePublication.getRandomFeaturedPublications();
+        return (T) servicePublication.getRandomFeaturedPublicationsIds();
     }
 
     @GetMapping("/getRandomPublications")
     public <T> T getRandomPublications() {
-        return (T) servicePublication.getRandomPublications();
+        return (T) servicePublication.getRandomPublicationsIds();
     }
 
     @GetMapping("/getMostRecentPublicationsId")

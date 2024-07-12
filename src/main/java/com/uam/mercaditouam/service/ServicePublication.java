@@ -38,22 +38,27 @@ public class ServicePublication implements IServicePublication{
     }
 
     @Override
-    public List<Publication> getRecentPublications() {
-        /*List<Publication> publicationList = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {
-           // Publication publication = repoPublication.findBy()
-        }*/
-        return repoPublication.findTop6ByOrderByIdDesc();
+    public List<Long> getRandomFeaturedPublicationsIds() {
+        List<Publication> publicationList = repoPublication.findRandomFeaturedPublications();
+        Collections.shuffle(publicationList);
+        var maxPublications = 6;
+        List<Long> publications = new ArrayList<>();
+        for(int i = 0; i < maxPublications; i++) {
+            publications.add(publicationList.get(i).getId());
+        }
+        return publications;
     }
 
     @Override
-    public List<Publication> getRandomFeaturedPublications() {
-        return null;
-    }
-
-    @Override
-    public List<Publication> getRandomPublications() {
-        return null;
+    public List<Long> getRandomPublicationsIds() {
+        List<Publication> publicationList = repoPublication.findAll();
+        Collections.shuffle(publicationList);
+        var maxPublications = 6;
+        List<Long> publications = new ArrayList<>();
+        for(int i = 0; i < maxPublications; i++) {
+            publications.add(publicationList.get(i).getId());
+        }
+        return publications;
     }
 
     public <T> T findById(Long id) {
@@ -66,7 +71,6 @@ public class ServicePublication implements IServicePublication{
 
     @Override
     public List<Long> getRecentPublicationIds() {
-
         return repoPublication.findTop6ByOrderByIdDesc()
                 .stream()
                 .map(Publication::getId)

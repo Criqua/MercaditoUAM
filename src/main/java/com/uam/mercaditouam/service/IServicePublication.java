@@ -10,14 +10,13 @@ import java.util.List;
 @Service
 public interface IServicePublication {
     List<Publication> getAll();
-    List<Publication> getRecentPublications();
-    List<Publication> getRandomFeaturedPublications();
+    List<Long> getRandomFeaturedPublicationsIds();
 
-    List<Publication> getRandomPublications();
-
-    <T> T findById(Long id);
+    List<Long> getRandomPublicationsIds();
 
     List<Long>getRecentPublicationIds();
+
+    <T> T findById(Long id);
 
     ResponseEntity<String> createPublication(PublicationDTO publicationDTO);
 
